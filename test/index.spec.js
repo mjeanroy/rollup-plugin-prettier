@@ -27,13 +27,43 @@
 const plugin = require('../dist/index.js');
 
 describe('rollup-plugin-prettier', () => {
+  beforeEach(() => {
+    spyOn(console, 'log');
+  });
+
   it('should run prettier', () => {
     const instance = plugin();
 
     const code = 'var foo=0;var test="hello world";';
     const result = instance.transformBundle(code);
 
+    expect(console.log).not.toHaveBeenCalled();
     expect(result.map).not.toBeDefined();
+    expect(result.code).toBe(
+      'var foo = 0;\n' +
+      'var test = "hello world";\n'
+    );
+  });
+
+  it('should run esformatter with source map', () => {
+    const instance = plugin();
+
+    instance.options({
+      sourceMap: true,
+    });
+
+    const code = 'var foo=0;var test="hello world";';
+    const result = instance.transformBundle(code);
+
+    expect(console.log).toHaveBeenCalledWith(
+      '[rollup-plugin-prettier] Source-map is enabled, computing diff is required'
+    );
+
+    expect(console.log).toHaveBeenCalledWith(
+      '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
+    );
+
+    expect(result.map).toBeDefined();
     expect(result.code).toBe(
       'var foo = 0;\n' +
       'var test = "hello world";\n'

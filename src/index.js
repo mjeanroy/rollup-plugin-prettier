@@ -24,10 +24,27 @@
 
 'use strict';
 
+const _ = require('lodash');
+const MagicString = require('magic-string');
+const diff = require('diff');
 const prettier = require('prettier');
 
+const NAME = 'rollup-plugin-prettier';
+
 module.exports = (options = {}) => {
+  let sourceMap;
+
   return {
+    /**
+     * Function called by `rollup` that is used to read the `sourceMap` setting.
+     *
+     * @param {Object} opts Rollup options.
+     * @return {void}
+     */
+    options(opts = {}) {
+      sourceMap = !!opts.sourceMap;
+    },
+
     /**
      * Function called by `rollup` before generating final bundle.
      *
@@ -37,9 +54,36 @@ module.exports = (options = {}) => {
     transformBundle(source) {
       const output = prettier.format(source, options);
 
-      console.log('output: ', output);
+      // No need to do more.
+      if (!sourceMap) {
+        return {code: output};
+      }
 
-      return {code: output};
+      console.log(`[${NAME}] Source-map is enabled, computing diff is required`);
+      console.log(`[${NAME}] This may take a moment (depends on the size of your bundle)`);
+
+      const magicString = new MagicString(source);
+      const changes = diff.diffChars(source, output);
+
+      let idx = 0;
+
+      _.forEach(changes, (part) => {
+        if (part.added) {
+          magicString.prependLeft(idx, part.value);
+          idx -= part.count;
+        } else if (part.removed) {
+          magicString.remove(idx, idx + part.count);
+        }
+
+        idx += part.count;
+      });
+
+      return {
+        code: magicString.toString(),
+        map: magicString.generateMap({
+          hires: true,
+        }),
+      };
     },
   };
 };
