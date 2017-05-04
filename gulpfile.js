@@ -93,7 +93,7 @@ gulp.task('tag', (done) => {
     return gulp.src(PKG_JSON)
       .pipe(bump({type: level})
       .on('error', gutil.log))
-      .pipe(ROOT);
+      .pipe(gulp.dest(ROOT));
   });
 
   gulp.task('release:' + level, ['build'], () => {
