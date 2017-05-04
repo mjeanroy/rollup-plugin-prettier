@@ -5,6 +5,10 @@
   "main": "dist/index.js",
   "author": "Mickael Jeanroy <mickael.jeanroy@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mjeanroy/rollup-plugin-prettier.git"
+  },
   "scripts": {
     "clean": "gulp clean",
     "lint": "gulp lint",
