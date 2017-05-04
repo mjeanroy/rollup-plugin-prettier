@@ -1,0 +1,34 @@
+{
+  "name": "rollup-plugin-prettier",
+  "version": "0.1.0",
+  "description": "Run prettier formatter with rollup",
+  "main": "dist/index.js",
+  "author": "Mickael Jeanroy <mickael.jeanroy@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "clean": "gulp clean",
+    "lint": "gulp lint",
+    "build": "gulp build",
+    "test": "gulp test"
+  },
+  "keywords": [
+    "rollup",
+    "rollup-plugin",
+    "prettier"
+  ],
+  "dependencies": {
+    "prettier": "^1.3.1"
+  },
+  "devDependencies": {
+    "babel-core": "6.24.1",
+    "babel-preset-es2015": "6.24.1",
+    "del": "2.2.2",
+    "eslint": "3.19.0",
+    "eslint-config-google": "0.7.1",
+    "gulp": "3.9.1",
+    "gulp-babel": "6.1.2",
+    "gulp-eslint": "3.0.1",
+    "gulp-jasmine": "2.4.2",
+    "jasmine-core": "2.6.1"
+  }
+}
