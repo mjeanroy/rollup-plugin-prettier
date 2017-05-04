@@ -36,6 +36,12 @@ module.exports = (options = {}) => {
 
   return {
     /**
+     * Plugin name (used by rollup for error messages and warnings).
+     * @type {string}
+     */
+    name: NAME,
+
+    /**
      * Function called by `rollup` that is used to read the `sourceMap` setting.
      *
      * @param {Object} opts Rollup options.

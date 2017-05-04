@@ -31,6 +31,11 @@ describe('rollup-plugin-prettier', () => {
     spyOn(console, 'log');
   });
 
+  it('should have a name', () => {
+    const instance = plugin();
+    expect(instance.name).toBe('rollup-plugin-prettier');
+  });
+
   it('should run prettier', () => {
     const instance = plugin();
 
@@ -62,6 +67,61 @@ describe('rollup-plugin-prettier', () => {
     expect(console.log).toHaveBeenCalledWith(
       '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
     );
+
+    expect(result.map).toBeDefined();
+    expect(result.code).toBe(
+      'var foo = 0;\n' +
+      'var test = "hello world";\n'
+    );
+  });
+
+  it('should run prettier with options', () => {
+    const options = {
+      singleQuote: true,
+    };
+
+    const instance = plugin(options);
+
+    instance.options({
+      sourceMap: true,
+    });
+
+    const code = 'var foo=0;var test="hello world";';
+    const result = instance.transformBundle(code);
+
+    expect(result.map).toBeDefined();
+    expect(result.code).toBe(
+      `var foo = 0;\n` +
+      `var test = 'hello world';\n`
+    );
+  });
+
+  it('should remove unnecessary spaces', () => {
+    const instance = plugin();
+
+    instance.options({
+      sourceMap: true,
+    });
+
+    const code = 'var foo    =    0;\nvar test = "hello world";';
+    const result = instance.transformBundle(code);
+
+    expect(result.map).toBeDefined();
+    expect(result.code).toBe(
+      'var foo = 0;\n' +
+      'var test = "hello world";\n'
+    );
+  });
+
+  it('should add and remove characters', () => {
+    const instance = plugin();
+
+    instance.options({
+      sourceMap: true,
+    });
+
+    const code = 'var foo    =    0;var test = "hello world";';
+    const result = instance.transformBundle(code);
 
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
