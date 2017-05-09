@@ -1,5 +1,6 @@
 # rollup-plugin-prettier
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mjeanroy/rollup-plugin-prettier.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/mjeanroy/rollup-plugin-prettier.svg?branch=master)](https://travis-ci.org/mjeanroy/rollup-plugin-prettier)
 [![Npm version](https://badge.fury.io/js/rollup-plugin-prettier.svg)](https://badge.fury.io/js/rollup-plugin-prettier)
 
