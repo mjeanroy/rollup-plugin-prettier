@@ -52,6 +52,12 @@ module.exports = {
 };
 ```
 
+## ChangeLogs
+
+- 0.2.0
+  - Dependency update (`magic-string`)
+- 0.1.0 First release
+
 ## License
 
 MIT License (MIT)
