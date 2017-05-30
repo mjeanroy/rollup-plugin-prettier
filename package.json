@@ -27,7 +27,7 @@
   "dependencies": {
     "diff": "3.2.0",
     "lodash": "4.17.4",
-    "magic-string": "0.21.2",
+    "magic-string": "0.21.3",
     "prettier": "^1.0.0"
   },
   "devDependencies": {
