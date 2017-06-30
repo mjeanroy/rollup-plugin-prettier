@@ -44,6 +44,6 @@
     "gulp-jasmine": "2.4.2",
     "gulp-util": "3.0.8",
     "jasmine-core": "2.6.4",
-    "run-sequence": "1.2.2"
+    "run-sequence": "2.0.0"
   }
 }
