@@ -24,7 +24,6 @@
 
 'use strict';
 
-const _ = require('lodash');
 const MagicString = require('magic-string');
 const diff = require('diff');
 const prettier = require('prettier');
@@ -71,18 +70,20 @@ module.exports = (options = {}) => {
       const magicString = new MagicString(source);
       const changes = diff.diffChars(source, output);
 
-      let idx = 0;
+      if (changes && changes.length > 0) {
+        let idx = 0;
 
-      _.forEach(changes, (part) => {
-        if (part.added) {
-          magicString.prependLeft(idx, part.value);
-          idx -= part.count;
-        } else if (part.removed) {
-          magicString.remove(idx, idx + part.count);
-        }
+        changes.forEach((part) => {
+          if (part.added) {
+            magicString.prependLeft(idx, part.value);
+            idx -= part.count;
+          } else if (part.removed) {
+            magicString.remove(idx, idx + part.count);
+          }
 
-        idx += part.count;
-      });
+          idx += part.count;
+        });
+      }
 
       return {
         code: magicString.toString(),
