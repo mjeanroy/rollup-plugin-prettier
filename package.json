@@ -42,7 +42,7 @@
     "gulp-git": "2.4.2",
     "gulp-jasmine": "2.4.2",
     "gulp-util": "3.0.8",
-    "jasmine-core": "2.7.0",
+    "jasmine-core": "2.8.0",
     "rollup": "0.45.2",
     "run-sequence": "2.1.0",
     "tmp": "0.0.33"
