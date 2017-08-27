@@ -33,8 +33,9 @@ module.exports = {
 
 ## Source Maps
 
-If source map is enabled in the global rollup options, then a source map will be generated on the formatted bundle.
-Note that this may take some time since `prettier` package is not able to generate a sourcemap : this plugin must compute the diff between the original bundle and the formatted result and generate the corresponding source map.
+If source map is enabled in the global rollup options, then a source map will be generated on the formatted bundle (except if sourcemap are explicitely disabled in the prettier options).
+
+Note that this may take some time since `prettier` package is not able to generate a sourcemap and his plugin must compute the diff between the original bundle and the formatted result and generate the corresponding sourcemap: for this reason, sourcemap are disabled by default.
 
 Here is an example:
 
@@ -43,17 +44,26 @@ const path = require('path');
 const prettier = require('rollup-plugin-prettier');
 
 module.exports = {
-  entry: path.join(__dirname, 'src', 'index.js'),
-  dest: path.join(__dirname, 'dist', 'bundle.js'),
-  sourceMap: true,
+  input: path.join(__dirname, 'src', 'index.js'),
+
+  output: {
+    file: path.join(__dirname, 'dist', 'bundle.js'),
+    sourcemap: true,
+  },
+
   plugins: [
-    prettier(),
+    prettier({
+      sourceMap: true, // Can also be disabled/enabled here.
+    }),
   ],
 };
 ```
 
 ## ChangeLogs
 
+- 0.3.0
+  - Support new `sourcemap` (lowercase) option of rollup.
+  - Sourcemap can now be activated/disabled in the plugin options.
 - 0.2.0
   - Dependency update (`magic-string`)
 - 0.1.0 First release

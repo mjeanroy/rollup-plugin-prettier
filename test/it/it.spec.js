@@ -159,4 +159,78 @@ describe('rollup-plugin-prettier', () => {
         done.fail(err);
       });
   });
+
+  it('should enable sourcemap (lowercase) on plugin', (done) => {
+    const output = path.join(tmpDir.name, 'bundle.js');
+    const config = {
+      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+
+      output: {
+        file: output,
+        format: 'es',
+      },
+
+      plugins: [
+        prettier({
+          sourcemap: true,
+        }),
+      ],
+    };
+
+    console.log.and.stub();
+
+    rollup.rollup(config)
+      .then((bundle) => bundle.write(config.output))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+            return;
+          }
+
+          expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+          done();
+        });
+      })
+      .catch((err) => {
+        done.fail(err);
+      });
+  });
+
+  it('should enable sourcemap (camelcase) on plugin', (done) => {
+    const output = path.join(tmpDir.name, 'bundle.js');
+    const config = {
+      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+
+      output: {
+        file: output,
+        format: 'es',
+      },
+
+      plugins: [
+        prettier({
+          sourceMap: true,
+        }),
+      ],
+    };
+
+    console.log.and.stub();
+
+    rollup.rollup(config)
+      .then((bundle) => bundle.write(config.output))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+            return;
+          }
+
+          expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+          done();
+        });
+      })
+      .catch((err) => {
+        done.fail(err);
+      });
+  });
 });

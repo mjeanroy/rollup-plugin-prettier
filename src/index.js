@@ -30,18 +30,20 @@ const prettier = require('prettier');
 
 const NAME = 'rollup-plugin-prettier';
 
-/**
- * Check if `sourcemap` option is enable or not.
- *
- * @param {Object} opts Options.
- * @return {boolean} `true` if sourcemap is enabled, `false` otherwise.
- */
-function hasSourceMap(opts) {
-  return !!(opts.sourcemap || opts.sourceMap);
-}
+module.exports = (options) => {
+  let sourcemap = null;
 
-module.exports = (options = {}) => {
-  let _sourcemap = false;
+  if (options && hasSourceMap(options)) {
+    sourcemap = isSourceMapEnabled(options);
+
+    // Delete custom option.
+    deleteSourceMap(options);
+
+    // Do not send an empty option object.
+    if (Object.keys(options).length === 0) {
+      options = undefined;
+    }
+  }
 
   return {
     /**
@@ -57,18 +59,20 @@ module.exports = (options = {}) => {
      * @return {void}
      */
     options(opts = {}) {
-      // Get the global `sourcemap` option on given object.
-      // Should support:
-      //  - `sourcemap` (lowercase) option which is the name with rollup >= 0.48.0,
-      //  - `sourceMap` (camelcase) option which is the (deprecated) name with rollup < 0.48.0.
-      const globalSourcemap = hasSourceMap(opts);
+      if (sourcemap == null) {
+        // Get the global `sourcemap` option on given object.
+        // Should support:
+        //  - `sourcemap` (lowercase) option which is the name with rollup >= 0.48.0,
+        //  - `sourceMap` (camelcase) option which is the (deprecated) name with rollup < 0.48.0.
+        const globalSourcemap = isSourceMapEnabled(opts);
 
-      // Since rollup 0.48, sourcemap option can be set on the `output` object.
-      const output = opts.output || {};
-      const outputSourceMap = Array.isArray(output) ? output.some(hasSourceMap) : hasSourceMap(output);
+        // Since rollup 0.48, sourcemap option can be set on the `output` object.
+        const output = opts.output || {};
+        const outputSourceMap = Array.isArray(output) ? output.some(isSourceMapEnabled) : isSourceMapEnabled(output);
 
-      // Enable or disable `sourcemap` generation.
-      _sourcemap = globalSourcemap || outputSourceMap;
+        // Enable or disable `sourcemap` generation.
+        sourcemap = globalSourcemap || outputSourceMap;
+      }
     },
 
     /**
@@ -84,7 +88,7 @@ module.exports = (options = {}) => {
       // Should we generate sourcemap?
       // The sourcemap option may be a boolean or any truthy value (such as a `string`).
       // Note that this option should be false by default as it may take a (very) long time.
-      if (!_sourcemap) {
+      if (!sourcemap) {
         return {code: output};
       }
 
@@ -118,3 +122,49 @@ module.exports = (options = {}) => {
     },
   };
 };
+
+
+const SOURCE_MAPS_OPTS = [
+  'sourcemap', // Name of the property with rollup >= 0.48.
+  'sourceMap', // Name of the property with rollup < 0.48.
+];
+
+/**
+ * Check if property exist on an object.
+ *
+ * @param {Object} o The object.
+ * @param {string} prop The property name.
+ * @return {boolean} `true` if property is defined on object, `false` otherwise.
+ */
+function has(o, prop) {
+  return prop in o;
+}
+
+/**
+ * Check if `sourcemap` option is defined on option object.
+ *
+ * @param {Object} opts Options.
+ * @return {boolean} `true` if sourcemap is defined, `false` otherwise.
+ */
+function hasSourceMap(opts) {
+  return SOURCE_MAPS_OPTS.some((p) => has(opts, p));
+}
+
+/**
+ * Check if `sourcemap` option is enable or not.
+ *
+ * @param {Object} opts Options.
+ * @return {boolean} `true` if sourcemap is enabled, `false` otherwise.
+ */
+function isSourceMapEnabled(opts) {
+  return !!(SOURCE_MAPS_OPTS.find((p) => opts[p]));
+}
+
+/**
+ * Delete sourcemap option on object.
+ *
+ * @param {Object} opts The object.
+ */
+function deleteSourceMap(opts) {
+  SOURCE_MAPS_OPTS.forEach((p) => delete opts[p]);
+}
