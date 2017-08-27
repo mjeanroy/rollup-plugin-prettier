@@ -39,7 +39,7 @@ module.exports = {
 
 If source map is enabled in the global rollup options, then a source map will be generated on the formatted bundle (except if sourcemap are explicitely disabled in the prettier options).
 
-Note that this may take some time since `prettier` package is not able to generate a sourcemap and his plugin must compute the diff between the original bundle and the formatted result and generate the corresponding sourcemap: for this reason, sourcemap are disabled by default.
+Note that this may take some time since `prettier` package is not able to generate a sourcemap and this plugin must compute the diff between the original bundle and the formatted result and generate the corresponding sourcemap: for this reason, sourcemap are disabled by default.
 
 Here is an example:
 
