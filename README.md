@@ -19,8 +19,12 @@ const prettier = require('rollup-plugin-prettier');
 
 ```javascript
 module.exports = {
-  entry: path.join(__dirname, 'src', 'index.js'),
-  dest: path.join(__dirname, 'dist', 'bundle.js'),
+  input: path.join(__dirname, 'src', 'index.js'),
+
+  output: {
+    file: path.join(__dirname, 'dist', 'bundle.js'),
+  },
+
   plugins: [
     // Run plugin with prettier options.
     prettier({
