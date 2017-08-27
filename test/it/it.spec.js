@@ -28,10 +28,15 @@ const fs = require('fs');
 const path = require('path');
 const rollup = require('rollup');
 const tmp = require('tmp');
+const Q = require('q');
 const prettier = require('../../dist/index.js');
 
 describe('rollup-plugin-prettier', () => {
   let tmpDir;
+
+  beforeEach(() => {
+    spyOn(console, 'log').and.callThrough();
+  });
 
   beforeEach(() => {
     tmpDir = tmp.dirSync({
@@ -44,28 +49,29 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should run prettier on final bundle', (done) => {
-    const bundleOutput = path.join(tmpDir.name, 'bundle.js');
-    const rollupConfig = {
-      entry: path.join(__dirname, 'fixtures', 'bundle.js'),
-      dest: bundleOutput,
-      sourceMap: false,
-      format: 'es',
+    const output = path.join(tmpDir.name, 'bundle.js');
+    const config = {
+      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+      output: {
+        file: output,
+        format: 'es',
+      },
+
       plugins: [
         prettier(),
       ],
     };
 
-    rollup.rollup(rollupConfig)
-      .then((bundle) => bundle.write(rollupConfig))
+    rollup.rollup(config)
+      .then((bundle) => bundle.write(config.output))
       .then(() => {
-        fs.readFile(bundleOutput, 'utf8', (err, data) => {
+        fs.readFile(output, 'utf8', (err, data) => {
           if (err) {
             done.fail(err);
           }
 
           const content = data.toString();
 
-          // Should be formatted.
           expect(content).toBeDefined();
           expect(content).toContain(
             'function sum(array) {\n' +
@@ -75,6 +81,82 @@ describe('rollup-plugin-prettier', () => {
 
           done();
         });
+      });
+  });
+
+  it('should run prettier on final bundle with sourcemap set in output option', (done) => {
+    const output = path.join(tmpDir.name, 'bundle.js');
+    const config = {
+      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+
+      output: {
+        file: output,
+        format: 'es',
+        sourcemap: 'inline',
+      },
+
+      plugins: [
+        prettier(),
+      ],
+    };
+
+    console.log.and.stub();
+
+    rollup.rollup(config)
+      .then((bundle) => bundle.write(config.output))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+            return;
+          }
+
+          const content = data.toString();
+          expect(content).toContain('//# sourceMappingURL');
+          expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+          done();
+        });
+      })
+      .catch((err) => {
+        done.fail(err);
+      });
+  });
+
+  it('should run prettier on final bundle with sourcemap set in output array option', (done) => {
+    const output = path.join(tmpDir.name, 'bundle.js');
+    const config = {
+      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+
+      output: [
+        {file: output, format: 'es', sourcemap: 'inline'},
+      ],
+
+      plugins: [
+        prettier(),
+      ],
+    };
+
+    console.log.and.stub();
+
+    rollup.rollup(config)
+      .then((bundle) => (
+        Q.all(config.output.map((out) => bundle.write(out)))
+      ))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+            return;
+          }
+
+          const content = data.toString();
+          expect(content).toContain('//# sourceMappingURL');
+          expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+          done();
+        });
+      })
+      .catch((err) => {
+        done.fail(err);
       });
   });
 });

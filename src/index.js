@@ -30,8 +30,18 @@ const prettier = require('prettier');
 
 const NAME = 'rollup-plugin-prettier';
 
+/**
+ * Check if `sourcemap` option is enable or not.
+ *
+ * @param {Object} opts Options.
+ * @return {boolean} `true` if sourcemap is enabled, `false` otherwise.
+ */
+function hasSourceMap(opts) {
+  return !!(opts.sourcemap || opts.sourceMap);
+}
+
 module.exports = (options = {}) => {
-  let sourceMap;
+  let _sourcemap = false;
 
   return {
     /**
@@ -47,24 +57,38 @@ module.exports = (options = {}) => {
      * @return {void}
      */
     options(opts = {}) {
-      sourceMap = !!opts.sourceMap;
+      // Get the global `sourcemap` option on given object.
+      // Should support:
+      //  - `sourcemap` (lowercase) option which is the name with rollup >= 0.48.0,
+      //  - `sourceMap` (camelcase) option which is the (deprecated) name with rollup < 0.48.0.
+      const globalSourcemap = hasSourceMap(opts);
+
+      // Since rollup 0.48, sourcemap option can be set on the `output` object.
+      const output = opts.output || {};
+      const outputSourceMap = Array.isArray(output) ? output.some(hasSourceMap) : hasSourceMap(output);
+
+      // Enable or disable `sourcemap` generation.
+      _sourcemap = globalSourcemap || outputSourceMap;
     },
 
     /**
      * Function called by `rollup` before generating final bundle.
      *
      * @param {string} source Souce code of the final bundle.
+     * @param {Object} oo Output option.
      * @return {Object} The result containing a `code` property and, if a enabled, a `map` property.
      */
-    transformBundle(source) {
+    transformBundle(source, oo) {
       const output = prettier.format(source, options);
 
-      // No need to do more.
-      if (!sourceMap) {
+      // Should we generate sourcemap?
+      // The sourcemap option may be a boolean or any truthy value (such as a `string`).
+      // Note that this option should be false by default as it may take a (very) long time.
+      if (!_sourcemap) {
         return {code: output};
       }
 
-      console.log(`[${NAME}] Source-map is enabled, computing diff is required`);
+      console.log(`[${NAME}] Sourcemap is enabled, computing diff is required`);
       console.log(`[${NAME}] This may take a moment (depends on the size of your bundle)`);
 
       const magicString = new MagicString(source);

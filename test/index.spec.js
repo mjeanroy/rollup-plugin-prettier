@@ -28,7 +28,7 @@ const plugin = require('../dist/index.js');
 
 describe('rollup-plugin-prettier', () => {
   beforeEach(() => {
-    spyOn(console, 'log');
+    spyOn(console, 'log').and.callThrough();
   });
 
   it('should have a name', () => {
@@ -50,18 +50,47 @@ describe('rollup-plugin-prettier', () => {
     );
   });
 
-  it('should run esformatter with source map', () => {
+  it('should run prettier with sourceMap (camelcase with rollup < 0.48)', () => {
     const instance = plugin();
 
     instance.options({
       sourceMap: true,
     });
 
+    console.log.and.stub();
+
     const code = 'var foo=0;var test="hello world";';
     const result = instance.transformBundle(code);
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] Source-map is enabled, computing diff is required'
+      '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
+    );
+
+    expect(console.log).toHaveBeenCalledWith(
+      '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
+    );
+
+    expect(result.map).toBeDefined();
+    expect(result.code).toBe(
+      'var foo = 0;\n' +
+      'var test = "hello world";\n'
+    );
+  });
+
+  it('should run prettier with sourcemap (lowercase with rollup >= 0.48)', () => {
+    const instance = plugin();
+
+    instance.options({
+      sourcemap: true,
+    });
+
+    console.log.and.stub();
+
+    const code = 'var foo=0;var test="hello world";';
+    const result = instance.transformBundle(code);
+
+    expect(console.log).toHaveBeenCalledWith(
+      '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
     );
 
     expect(console.log).toHaveBeenCalledWith(
@@ -83,13 +112,12 @@ describe('rollup-plugin-prettier', () => {
     const instance = plugin(options);
 
     instance.options({
-      sourceMap: true,
+      sourceMap: false,
     });
 
     const code = 'var foo=0;var test="hello world";';
     const result = instance.transformBundle(code);
 
-    expect(result.map).toBeDefined();
     expect(result.code).toBe(
       `var foo = 0;\n` +
       `var test = 'hello world';\n`
@@ -100,13 +128,12 @@ describe('rollup-plugin-prettier', () => {
     const instance = plugin();
 
     instance.options({
-      sourceMap: true,
+      sourceMap: false,
     });
 
     const code = 'var foo    =    0;\nvar test = "hello world";';
     const result = instance.transformBundle(code);
 
-    expect(result.map).toBeDefined();
     expect(result.code).toBe(
       'var foo = 0;\n' +
       'var test = "hello world";\n'
@@ -117,13 +144,12 @@ describe('rollup-plugin-prettier', () => {
     const instance = plugin();
 
     instance.options({
-      sourceMap: true,
+      sourceMap: false,
     });
 
     const code = 'var foo    =    0;var test = "hello world";';
     const result = instance.transformBundle(code);
 
-    expect(result.map).toBeDefined();
     expect(result.code).toBe(
       'var foo = 0;\n' +
       'var test = "hello world";\n'
