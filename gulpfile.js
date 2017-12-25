@@ -91,8 +91,8 @@ gulp.task('tag', (done) => {
 ['major', 'minor', 'patch'].forEach((level) => {
   gulp.task(`bump:${level}`, () => {
     return gulp.src(PKG_JSON)
-      .pipe(bump({type: level})
-      .on('error', (e) => log.error(e)))
+      .pipe(bump({type: level}))
+      .on('error', (e) => log.error(e))
       .pipe(gulp.dest(ROOT));
   });
 
