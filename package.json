@@ -41,7 +41,7 @@
     "gulp-bump": "3.0.0",
     "gulp-eslint": "4.0.0",
     "gulp-git": "2.5.0",
-    "gulp-jasmine": "2.4.2",
+    "gulp-jasmine": "3.0.0",
     "jasmine-core": "2.8.0",
     "q": "1.5.1",
     "rollup": "0.52.3",
