@@ -65,6 +65,10 @@ module.exports = {
 
 ## ChangeLogs
 
+- 0.4.0
+  - Add compatibility with rollup >= 0.53 with output `sourcemap` option (see [rollup #1583](https://github.com/rollup/rollup/issues/1583)).
+  - Avoid side-effect and do not change the plugin options (see [032be5](https://github.com/mjeanroy/rollup-plugin-prettier/commit/032be56317ab83cd87c2460f1dadc05a617c0d12)).
+  - Various dependency updates.
 - 0.3.0
   - Support new `sourcemap` (lowercase) option of rollup.
   - Sourcemap can now be activated/disabled in the plugin options.
