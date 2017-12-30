@@ -24,6 +24,7 @@
 
 'use strict';
 
+const prettier = require('prettier');
 const plugin = require('../dist/index.js');
 
 describe('rollup-plugin-prettier', () => {
@@ -231,5 +232,61 @@ describe('rollup-plugin-prettier', () => {
       'var foo = 0;\n' +
       'var test = "hello world";\n'
     );
+  });
+
+  it('should avoid side effect and do not modify plugin options', () => {
+    const options = {
+      sourceMap: false,
+    };
+
+    const instance = plugin(options);
+    instance.options({});
+    instance.transformBundle('var foo = 0;');
+
+    // It should not have been touched.
+    expect(options).toEqual({
+      sourceMap: false,
+    });
+  });
+
+  it('should run prettier without sourcemap options', () => {
+    const options = {
+      sourceMap: false,
+    };
+
+    spyOn(prettier, 'format').and.callThrough();
+
+    const code = 'var foo = 0;';
+    const instance = plugin(options);
+    instance.options({});
+    instance.transformBundle(code);
+
+    expect(prettier.format).toHaveBeenCalledWith(code, undefined);
+    expect(options).toEqual({
+      sourceMap: false,
+    });
+  });
+
+  it('should run prettier without sourcemap options and custom other options', () => {
+    const options = {
+      sourceMap: false,
+      singleQuote: true,
+    };
+
+    spyOn(prettier, 'format').and.callThrough();
+
+    const code = 'var foo = 0;';
+    const instance = plugin(options);
+    instance.options({});
+    instance.transformBundle(code);
+
+    expect(prettier.format).toHaveBeenCalledWith(code, {
+      singleQuote: true,
+    });
+
+    expect(options).toEqual({
+      sourceMap: false,
+      singleQuote: true,
+    });
   });
 });
