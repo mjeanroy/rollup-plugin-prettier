@@ -44,7 +44,7 @@
     "gulp-jasmine": "3.0.0",
     "jasmine-core": "2.8.0",
     "q": "1.5.1",
-    "rollup": "0.53.2",
+    "rollup": "0.53.3",
     "run-sequence": "2.2.0",
     "tmp": "0.0.33"
   }
