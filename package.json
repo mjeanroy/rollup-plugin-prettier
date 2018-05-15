@@ -26,7 +26,7 @@
   ],
   "dependencies": {
     "diff": "3.5.0",
-    "magic-string": "0.24.0",
+    "magic-string": "0.24.1",
     "prettier": "^1.0.0"
   },
   "devDependencies": {
