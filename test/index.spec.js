@@ -38,7 +38,9 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should run prettier', () => {
-    const instance = plugin();
+    const instance = plugin({
+      parser: 'babylon',
+    });
 
     const code = 'var foo=0;var test="hello world";';
     const result = instance.transformBundle(code);
@@ -52,7 +54,9 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should run prettier with sourceMap (camelcase with rollup < 0.48)', () => {
-    const instance = plugin();
+    const instance = plugin({
+      parser: 'babylon',
+    });
 
     instance.options({
       sourceMap: true,
@@ -79,7 +83,9 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should run prettier with sourcemap (lowercase with rollup >= 0.48)', () => {
-    const instance = plugin();
+    const instance = plugin({
+      parser: 'babylon',
+    });
 
     instance.options({
       sourcemap: true,
@@ -106,7 +112,9 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should run prettier with sourcemap in output options', () => {
-    const instance = plugin();
+    const instance = plugin({
+      parser: 'babylon',
+    });
 
     // The input options may not contain `sourcemap` entry with rollup >= 0.53.
     instance.options({});
@@ -134,7 +142,9 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should run prettier with sourcemap in output options (camelcase format)', () => {
-    const instance = plugin();
+    const instance = plugin({
+      parser: 'babylon',
+    });
 
     // The input options may not contain `sourcemap` entry with rollup >= 0.53.
     instance.options({});
@@ -162,7 +172,9 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should run prettier with sourcemap disabled in output options', () => {
-    const instance = plugin();
+    const instance = plugin({
+      parser: 'babylon',
+    });
 
     // The input options may not contain `sourcemap` entry with rollup >= 0.53.
     instance.options({});
@@ -184,6 +196,7 @@ describe('rollup-plugin-prettier', () => {
 
   it('should run prettier with options', () => {
     const options = {
+      parser: 'babylon',
       singleQuote: true,
     };
 
@@ -203,7 +216,9 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should remove unnecessary spaces', () => {
-    const instance = plugin();
+    const instance = plugin({
+      parser: 'babylon',
+    });
 
     instance.options({
       sourceMap: false,
@@ -219,7 +234,9 @@ describe('rollup-plugin-prettier', () => {
   });
 
   it('should add and remove characters', () => {
-    const instance = plugin();
+    const instance = plugin({
+      parser: 'babylon',
+    });
 
     instance.options({
       sourceMap: false,
@@ -236,6 +253,7 @@ describe('rollup-plugin-prettier', () => {
 
   it('should avoid side effect and do not modify plugin options', () => {
     const options = {
+      parser: 'babylon',
       sourceMap: false,
     };
 
@@ -245,12 +263,14 @@ describe('rollup-plugin-prettier', () => {
 
     // It should not have been touched.
     expect(options).toEqual({
+      parser: 'babylon',
       sourceMap: false,
     });
   });
 
   it('should run prettier without sourcemap options', () => {
     const options = {
+      parser: 'babylon',
       sourceMap: false,
     };
 
@@ -261,14 +281,19 @@ describe('rollup-plugin-prettier', () => {
     instance.options({});
     instance.transformBundle(code);
 
-    expect(prettier.format).toHaveBeenCalledWith(code, undefined);
+    expect(prettier.format).toHaveBeenCalledWith(code, {
+      parser: 'babylon',
+    });
+
     expect(options).toEqual({
+      parser: 'babylon',
       sourceMap: false,
     });
   });
 
   it('should run prettier without sourcemap options and custom other options', () => {
     const options = {
+      parser: 'babylon',
       sourceMap: false,
       singleQuote: true,
     };
@@ -281,10 +306,12 @@ describe('rollup-plugin-prettier', () => {
     instance.transformBundle(code);
 
     expect(prettier.format).toHaveBeenCalledWith(code, {
+      parser: 'babylon',
       singleQuote: true,
     });
 
     expect(options).toEqual({
+      parser: 'babylon',
       sourceMap: false,
       singleQuote: true,
     });

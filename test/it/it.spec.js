@@ -58,7 +58,9 @@ describe('rollup-plugin-prettier', () => {
       },
 
       plugins: [
-        prettier(),
+        prettier({
+          parser: 'babylon',
+        }),
       ],
     };
 
@@ -96,7 +98,9 @@ describe('rollup-plugin-prettier', () => {
       },
 
       plugins: [
-        prettier(),
+        prettier({
+          parser: 'babylon',
+        }),
       ],
     };
 
@@ -132,7 +136,9 @@ describe('rollup-plugin-prettier', () => {
       ],
 
       plugins: [
-        prettier(),
+        prettier({
+          parser: 'babylon',
+        }),
       ],
     };
 
@@ -172,6 +178,7 @@ describe('rollup-plugin-prettier', () => {
 
       plugins: [
         prettier({
+          parser: 'babylon',
           sourcemap: true,
         }),
       ],
@@ -209,6 +216,7 @@ describe('rollup-plugin-prettier', () => {
 
       plugins: [
         prettier({
+          parser: 'babylon',
           sourceMap: true,
         }),
       ],
