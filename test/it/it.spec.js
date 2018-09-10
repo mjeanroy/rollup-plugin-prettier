@@ -65,25 +65,25 @@ describe('rollup-plugin-prettier', () => {
     };
 
     rollup.rollup(config)
-      .then((bundle) => bundle.write(config.output))
-      .then(() => {
-        fs.readFile(output, 'utf8', (err, data) => {
-          if (err) {
-            done.fail(err);
-          }
+        .then((bundle) => bundle.write(config.output))
+        .then(() => {
+          fs.readFile(output, 'utf8', (err, data) => {
+            if (err) {
+              done.fail(err);
+            }
 
-          const content = data.toString();
+            const content = data.toString();
 
-          expect(content).toBeDefined();
-          expect(content).toContain(
-            'function sum(array) {\n' +
-            '  return array.reduce((acc, x) => acc + x, 0);\n' +
-            '}'
-          );
+            expect(content).toBeDefined();
+            expect(content).toContain(
+                'function sum(array) {\n' +
+                '  return array.reduce((acc, x) => acc + x, 0);\n' +
+                '}'
+            );
 
-          done();
+            done();
+          });
         });
-      });
   });
 
   it('should run prettier on final bundle with sourcemap set in output option', (done) => {
@@ -107,23 +107,23 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     rollup.rollup(config)
-      .then((bundle) => bundle.write(config.output))
-      .then(() => {
-        fs.readFile(output, 'utf8', (err, data) => {
-          if (err) {
-            done.fail(err);
-            return;
-          }
+        .then((bundle) => bundle.write(config.output))
+        .then(() => {
+          fs.readFile(output, 'utf8', (err, data) => {
+            if (err) {
+              done.fail(err);
+              return;
+            }
 
-          const content = data.toString();
-          expect(content).toContain('//# sourceMappingURL');
-          expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
-          done();
+            const content = data.toString();
+            expect(content).toContain('//# sourceMappingURL');
+            expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+            done();
+          });
+        })
+        .catch((err) => {
+          done.fail(err);
         });
-      })
-      .catch((err) => {
-        done.fail(err);
-      });
   });
 
   it('should run prettier on final bundle with sourcemap set in output array option', (done) => {
@@ -145,25 +145,25 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     rollup.rollup(config)
-      .then((bundle) => (
-        Q.all(config.output.map((out) => bundle.write(out)))
-      ))
-      .then(() => {
-        fs.readFile(output, 'utf8', (err, data) => {
-          if (err) {
-            done.fail(err);
-            return;
-          }
+        .then((bundle) => (
+          Q.all(config.output.map((out) => bundle.write(out)))
+        ))
+        .then(() => {
+          fs.readFile(output, 'utf8', (err, data) => {
+            if (err) {
+              done.fail(err);
+              return;
+            }
 
-          const content = data.toString();
-          expect(content).toContain('//# sourceMappingURL');
-          expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
-          done();
+            const content = data.toString();
+            expect(content).toContain('//# sourceMappingURL');
+            expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+            done();
+          });
+        })
+        .catch((err) => {
+          done.fail(err);
         });
-      })
-      .catch((err) => {
-        done.fail(err);
-      });
   });
 
   it('should enable sourcemap (lowercase) on plugin', (done) => {
@@ -187,21 +187,21 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     rollup.rollup(config)
-      .then((bundle) => bundle.write(config.output))
-      .then(() => {
-        fs.readFile(output, 'utf8', (err, data) => {
-          if (err) {
-            done.fail(err);
-            return;
-          }
+        .then((bundle) => bundle.write(config.output))
+        .then(() => {
+          fs.readFile(output, 'utf8', (err, data) => {
+            if (err) {
+              done.fail(err);
+              return;
+            }
 
-          expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
-          done();
+            expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+            done();
+          });
+        })
+        .catch((err) => {
+          done.fail(err);
         });
-      })
-      .catch((err) => {
-        done.fail(err);
-      });
   });
 
   it('should enable sourcemap (camelcase) on plugin', (done) => {
@@ -225,20 +225,20 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     rollup.rollup(config)
-      .then((bundle) => bundle.write(config.output))
-      .then(() => {
-        fs.readFile(output, 'utf8', (err, data) => {
-          if (err) {
-            done.fail(err);
-            return;
-          }
+        .then((bundle) => bundle.write(config.output))
+        .then(() => {
+          fs.readFile(output, 'utf8', (err, data) => {
+            if (err) {
+              done.fail(err);
+              return;
+            }
 
-          expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
-          done();
+            expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+            done();
+          });
+        })
+        .catch((err) => {
+          done.fail(err);
         });
-      })
-      .catch((err) => {
-        done.fail(err);
-      });
   });
 });
