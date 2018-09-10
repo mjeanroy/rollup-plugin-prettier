@@ -48,8 +48,8 @@ describe('rollup-plugin-prettier', () => {
     expect(console.log).not.toHaveBeenCalled();
     expect(result.map).not.toBeDefined();
     expect(result.code).toBe(
-      'var foo = 0;\n' +
-      'var test = "hello world";\n'
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
     );
   });
 
@@ -68,17 +68,17 @@ describe('rollup-plugin-prettier', () => {
     const result = instance.transformBundle(code);
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
+        '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
     );
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
+        '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
     );
 
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
-      'var foo = 0;\n' +
-      'var test = "hello world";\n'
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
     );
   });
 
@@ -97,17 +97,17 @@ describe('rollup-plugin-prettier', () => {
     const result = instance.transformBundle(code);
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
+        '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
     );
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
+        '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
     );
 
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
-      'var foo = 0;\n' +
-      'var test = "hello world";\n'
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
     );
   });
 
@@ -127,17 +127,17 @@ describe('rollup-plugin-prettier', () => {
     });
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
+        '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
     );
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
+        '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
     );
 
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
-      'var foo = 0;\n' +
-      'var test = "hello world";\n'
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
     );
   });
 
@@ -157,17 +157,17 @@ describe('rollup-plugin-prettier', () => {
     });
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
+        '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
     );
 
     expect(console.log).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
+        '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
     );
 
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
-      'var foo = 0;\n' +
-      'var test = "hello world";\n'
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
     );
   });
 
@@ -189,8 +189,8 @@ describe('rollup-plugin-prettier', () => {
     expect(console.log).not.toHaveBeenCalled();
     expect(result.map).not.toBeDefined();
     expect(result.code).toBe(
-      'var foo = 0;\n' +
-      'var test = "hello world";\n'
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
     );
   });
 
@@ -210,8 +210,8 @@ describe('rollup-plugin-prettier', () => {
     const result = instance.transformBundle(code);
 
     expect(result.code).toBe(
-      `var foo = 0;\n` +
-      `var test = 'hello world';\n`
+        `var foo = 0;\n` +
+        `var test = 'hello world';\n`
     );
   });
 
@@ -228,8 +228,8 @@ describe('rollup-plugin-prettier', () => {
     const result = instance.transformBundle(code);
 
     expect(result.code).toBe(
-      'var foo = 0;\n' +
-      'var test = "hello world";\n'
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
     );
   });
 
@@ -246,8 +246,8 @@ describe('rollup-plugin-prettier', () => {
     const result = instance.transformBundle(code);
 
     expect(result.code).toBe(
-      'var foo = 0;\n' +
-      'var test = "hello world";\n'
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
     );
   });
 
