@@ -30,7 +30,7 @@
     "prettier": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.0.0",
+    "@babel/core": "7.0.1",
     "@babel/preset-env": "7.0.0",
     "del": "3.0.0",
     "eslint": "5.5.0",
