@@ -29,6 +29,7 @@ const path = require('path');
 const rollup = require('rollup');
 const tmp = require('tmp');
 const Q = require('q');
+const babelParser = require('@babel/parser');
 const prettier = require('../../dist/index.js');
 
 describe('rollup-plugin-prettier', () => {
@@ -60,6 +61,48 @@ describe('rollup-plugin-prettier', () => {
       plugins: [
         prettier({
           parser: 'babylon',
+        }),
+      ],
+    };
+
+    rollup.rollup(config)
+        .then((bundle) => bundle.write(config.output))
+        .then(() => {
+          fs.readFile(output, 'utf8', (err, data) => {
+            if (err) {
+              done.fail(err);
+            }
+
+            const content = data.toString();
+
+            expect(content).toBeDefined();
+            expect(content).toContain(
+                'function sum(array) {\n' +
+                '  return array.reduce((acc, x) => acc + x, 0);\n' +
+                '}'
+            );
+
+            done();
+          });
+        });
+  });
+
+  it('should run prettier with @babel/parser instead of babylon', (done) => {
+    const output = path.join(tmpDir.name, 'bundle.js');
+    const config = {
+      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+      output: {
+        file: output,
+        format: 'es',
+      },
+
+      plugins: [
+        prettier({
+          parser(text) {
+            return babelParser.parse(text, {
+              sourceType: 'module',
+            });
+          },
         }),
       ],
     };
