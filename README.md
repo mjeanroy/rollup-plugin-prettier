@@ -14,10 +14,10 @@ Install the plugin with NPM:
 
 Then add it to your rollup configuration:
 
+```javascript
 const path = require('path');
 const prettier = require('rollup-plugin-prettier');
 
-```javascript
 module.exports = {
   input: path.join(__dirname, 'src', 'index.js'),
 
@@ -83,3 +83,4 @@ MIT License (MIT)
 ## Contributing
 
 If you find a bug or think about enhancement, feel free to contribute and submit an issue or a pull request.
+
