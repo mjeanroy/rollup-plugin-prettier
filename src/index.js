@@ -24,6 +24,8 @@
 
 'use strict';
 
+const isEmpty = require('lodash.isempty');
+const omitBy = require('lodash.omitby');
 const MagicString = require('magic-string');
 const diff = require('diff');
 const prettier = require('prettier');
@@ -34,16 +36,14 @@ module.exports = (options) => {
   let sourcemap = null;
   let newOptions = options;
 
-  if (options && hasSourceMap(options)) {
-    sourcemap = isSourceMapEnabled(options);
+  if (newOptions && hasSourceMap(newOptions)) {
+    sourcemap = isSourceMapEnabled(newOptions);
+    newOptions = omitSourceMap(newOptions);
+  }
 
-    // Delete custom option.
-    newOptions = deleteSourceMap(options);
-
-    // Do not send an empty option object.
-    if (Object.keys(newOptions).length === 0) {
-      newOptions = undefined;
-    }
+  // Do not send an empty option object.
+  if (isEmpty(newOptions)) {
+    newOptions = undefined;
   }
 
   return {
@@ -60,7 +60,7 @@ module.exports = (options) => {
      * @return {void}
      */
     options(opts = {}) {
-      if (isNil(sourcemap)) {
+      if (sourcemap == null) {
         // Get the global `sourcemap` option on given object.
         // Should support:
         //  - `sourcemap` (lowercase) option which is the name with rollup >= 0.48.0,
@@ -85,7 +85,7 @@ module.exports = (options) => {
      */
     transformBundle(source, outputOptions) {
       const output = prettier.format(source, newOptions);
-      const outputOptionsSourcemap = isNil(outputOptions) ? null : isSourceMapEnabled(outputOptions);
+      const outputOptionsSourcemap = outputOptions == null ? null : isSourceMapEnabled(outputOptions);
 
       // Should we generate sourcemap?
       // The sourcemap option may be a boolean or any truthy value (such as a `string`).
@@ -125,22 +125,10 @@ module.exports = (options) => {
   };
 };
 
-
 const SOURCE_MAPS_OPTS = [
   'sourcemap', // Name of the property with rollup >= 0.48.
   'sourceMap', // Name of the property with rollup < 0.48.
 ];
-
-/**
- * Check if property exist on an object.
- *
- * @param {Object} o The object.
- * @param {string} prop The property name.
- * @return {boolean} `true` if property is defined on object, `false` otherwise.
- */
-function has(o, prop) {
-  return prop in o;
-}
 
 /**
  * Check if `sourcemap` option is defined on option object.
@@ -149,7 +137,9 @@ function has(o, prop) {
  * @return {boolean} `true` if sourcemap is defined, `false` otherwise.
  */
 function hasSourceMap(opts) {
-  return SOURCE_MAPS_OPTS.some((p) => has(opts, p));
+  return SOURCE_MAPS_OPTS.some((p) => (
+    p in opts
+  ));
 }
 
 /**
@@ -168,24 +158,8 @@ function isSourceMapEnabled(opts) {
  * @param {Object} opts The object.
  * @return {Object} Option object without `sourcemap` entry.
  */
-function deleteSourceMap(opts) {
-  const newOptions = {};
-
-  Object.keys(opts).forEach((k) => {
-    if (SOURCE_MAPS_OPTS.indexOf(k) < 0) {
-      newOptions[k] = opts[k];
-    }
-  });
-
-  return newOptions;
-}
-
-/**
- * Check if value is `null` or `undefined`.
- *
- * @param {*} value Value to check.
- * @return {boolean} `true` if `value` is `null` or `undefined`, `false` otherwise.
- */
-function isNil(value) {
-  return value == null;
+function omitSourceMap(opts) {
+  return omitBy(opts, (value, key) => (
+    SOURCE_MAPS_OPTS.indexOf(key) >= 0
+  ));
 }
