@@ -24,6 +24,7 @@
 
 'use strict';
 
+const path = require('path');
 const prettier = require('prettier');
 const plugin = require('../dist/index.js');
 
@@ -314,6 +315,24 @@ describe('rollup-plugin-prettier', () => {
       parser: 'babylon',
       sourceMap: false,
       singleQuote: true,
+    });
+  });
+
+  it('should run prettier using config file from given current working directory', () => {
+    const cwd = path.join(__dirname, 'fixtures');
+    const options = {cwd};
+
+    spyOn(prettier, 'format').and.callThrough();
+
+    const code = 'var foo = 0;';
+    const instance = plugin(options);
+    instance.transformBundle(code);
+
+    expect(options).toEqual({cwd});
+    expect(prettier.format).toHaveBeenCalledWith(code, {
+      parser: 'babylon',
+      singleQuote: true,
+      tabWidth: 2,
     });
   });
 });

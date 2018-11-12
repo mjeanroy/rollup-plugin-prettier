@@ -52,7 +52,7 @@ describe('rollup-plugin-prettier', () => {
   it('should run prettier on final bundle', (done) => {
     const output = path.join(tmpDir.name, 'bundle.js');
     const config = {
-      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+      input: getBundlePath(),
       output: {
         file: output,
         format: 'es',
@@ -90,7 +90,7 @@ describe('rollup-plugin-prettier', () => {
   it('should run prettier with @babel/parser instead of babylon', (done) => {
     const output = path.join(tmpDir.name, 'bundle.js');
     const config = {
-      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+      input: getBundlePath(),
       output: {
         file: output,
         format: 'es',
@@ -132,7 +132,7 @@ describe('rollup-plugin-prettier', () => {
   it('should run prettier on final bundle with sourcemap set in output option', (done) => {
     const output = path.join(tmpDir.name, 'bundle.js');
     const config = {
-      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+      input: getBundlePath(),
 
       output: {
         file: output,
@@ -172,7 +172,7 @@ describe('rollup-plugin-prettier', () => {
   it('should run prettier on final bundle with sourcemap set in output array option', (done) => {
     const output = path.join(tmpDir.name, 'bundle.js');
     const config = {
-      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+      input: getBundlePath(),
 
       output: [
         {file: output, format: 'es', sourcemap: 'inline'},
@@ -212,7 +212,7 @@ describe('rollup-plugin-prettier', () => {
   it('should enable sourcemap (lowercase) on plugin', (done) => {
     const output = path.join(tmpDir.name, 'bundle.js');
     const config = {
-      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+      input: getBundlePath(),
 
       output: {
         file: output,
@@ -250,7 +250,7 @@ describe('rollup-plugin-prettier', () => {
   it('should enable sourcemap (camelcase) on plugin', (done) => {
     const output = path.join(tmpDir.name, 'bundle.js');
     const config = {
-      input: path.join(__dirname, 'fixtures', 'bundle.js'),
+      input: getBundlePath(),
 
       output: {
         file: output,
@@ -284,4 +284,13 @@ describe('rollup-plugin-prettier', () => {
           done.fail(err);
         });
   });
+
+  /**
+   * Get the output bundle absolute path.
+   *
+   * @return {string} Bundle absolute path.
+   */
+  function getBundlePath() {
+    return path.join(__dirname, '..', 'fixtures', 'bundle.js');
+  }
 });

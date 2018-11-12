@@ -38,8 +38,17 @@ module.exports = (options) => {
 
   if (newOptions && hasSourceMap(newOptions)) {
     sourcemap = isSourceMapEnabled(newOptions);
-    newOptions = omitSourceMap(newOptions);
   }
+
+  // Try to resolve config file it it exists
+  const cwd = newOptions && hasCwd(newOptions) ? newOptions.cwd : process.cwd();
+  const configOptions = prettier.resolveConfig.sync(cwd);
+  if (configOptions != null) {
+    newOptions = Object.assign(configOptions, newOptions || {});
+  }
+
+  newOptions = omitSourceMap(newOptions);
+  newOptions = omitCwd(newOptions);
 
   // Do not send an empty option object.
   if (isEmpty(newOptions)) {
@@ -129,6 +138,28 @@ const SOURCE_MAPS_OPTS = [
   'sourcemap', // Name of the property with rollup >= 0.48.
   'sourceMap', // Name of the property with rollup < 0.48.
 ];
+
+/**
+ * Check if given option object has a `cwd` entry.
+ *
+ * @param {Object} opts Option object.
+ * @return {boolean} `true` if `opts` has `cwd` entry, `false` otherwise.
+ */
+function hasCwd(opts) {
+  return 'cwd' in opts;
+}
+
+/**
+ * Create option object from given one removing `cwd` key if present.
+ *
+ * @param {Object} opts Option object.
+ * @return {Object} New option object.
+ */
+function omitCwd(opts) {
+  return omitBy(opts, (v, k) => (
+    k === 'cwd'
+  ));
+}
 
 /**
  * Check if `sourcemap` option is defined on option object.
