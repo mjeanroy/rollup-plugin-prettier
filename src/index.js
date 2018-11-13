@@ -41,10 +41,13 @@ module.exports = (options) => {
   }
 
   // Try to resolve config file it it exists
-  const cwd = newOptions && hasCwd(newOptions) ? newOptions.cwd : process.cwd();
-  const configOptions = prettier.resolveConfig.sync(cwd);
-  if (configOptions != null) {
-    newOptions = Object.assign(configOptions, newOptions || {});
+  // Be careful, `resolveConfig` function does not exist on old version of prettier.
+  if (prettier.resolveConfig) {
+    const cwd = newOptions && hasCwd(newOptions) ? newOptions.cwd : process.cwd();
+    const configOptions = prettier.resolveConfig.sync(cwd);
+    if (configOptions != null) {
+      newOptions = Object.assign(configOptions, newOptions || {});
+    }
   }
 
   newOptions = omitSourceMap(newOptions);
