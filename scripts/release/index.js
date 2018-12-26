@@ -25,6 +25,7 @@
 const gulp = require('gulp');
 const git = require('gulp-git');
 const bump = require('gulp-bump');
+const log = require('fancy-log');
 const config = require('../config');
 
 /**
