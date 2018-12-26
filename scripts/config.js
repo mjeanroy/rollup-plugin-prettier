@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2018 Mickael Jeanroy
+ * Copyright (c) 2016-2018 Mickael Jeanroy
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,14 @@
  * SOFTWARE.
  */
 
-const gulp = require('gulp');
-const clean = require('./scripts/clean');
-const lint = require('./scripts/lint');
-const build = require('./scripts/build');
-const test = require('./scripts/test');
-const release = require('./scripts/release');
-
-const prebuild = gulp.series(clean, lint);
-const pretest = gulp.series(prebuild, build);
-const prerelease = gulp.series(pretest, test);
+const path = require('path');
+const ROOT = path.join(__dirname, '..');
 
 module.exports = {
-  'clean': clean,
-  'lint': lint,
-  'build': gulp.series(prebuild, build),
-  'test': gulp.series(pretest, test),
-  'release:patch': gulp.series(prerelease, release.patch),
-  'release:minor': gulp.series(prerelease, release.minor),
-  'release:major': gulp.series(prerelease, release.major),
+  root: ROOT,
+  src: path.join(ROOT, 'src'),
+  test: path.join(ROOT, 'test'),
+  scripts: path.join(ROOT, 'scripts'),
+  dist: path.join(ROOT, 'dist'),
+  pkg: path.join(ROOT, 'package.json'),
 };

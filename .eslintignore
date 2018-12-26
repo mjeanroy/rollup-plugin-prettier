@@ -22,16 +22,5 @@
 # THE SOFTWARE.
 ##
 
-# NPM modules
-node_modules/
-
-# Do not send dev files
-/test
-/src
-/scripts
-/.eslintrc
-/.eslintignore
-/.babelrc
-/.nvmrc
-/.travis.yml
-/gulpfile.js
+# NPM
+/dist
