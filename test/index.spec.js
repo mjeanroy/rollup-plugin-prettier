@@ -44,7 +44,7 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.transformBundle(code);
+    const result = instance.renderChunk(code);
 
     expect(console.log).not.toHaveBeenCalled();
     expect(result.map).not.toBeDefined();
@@ -66,7 +66,7 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.transformBundle(code);
+    const result = instance.renderChunk(code);
 
     expect(console.log).toHaveBeenCalledWith(
         '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
@@ -95,7 +95,7 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.transformBundle(code);
+    const result = instance.renderChunk(code);
 
     expect(console.log).toHaveBeenCalledWith(
         '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
@@ -123,7 +123,7 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.transformBundle(code, {
+    const result = instance.renderChunk(code, null, {
       sourcemap: true,
     });
 
@@ -153,7 +153,7 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.transformBundle(code, {
+    const result = instance.renderChunk(code, null, {
       sourceMap: true,
     });
 
@@ -183,7 +183,7 @@ describe('rollup-plugin-prettier', () => {
     console.log.and.stub();
 
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.transformBundle(code, {
+    const result = instance.renderChunk(code, null, {
       sourcemap: false,
     });
 
@@ -208,7 +208,7 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.transformBundle(code);
+    const result = instance.renderChunk(code);
 
     expect(result.code).toBe(
         `var foo = 0;\n` +
@@ -226,7 +226,7 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo    =    0;\nvar test = "hello world";';
-    const result = instance.transformBundle(code);
+    const result = instance.renderChunk(code);
 
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -244,7 +244,7 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo    =    0;var test = "hello world";';
-    const result = instance.transformBundle(code);
+    const result = instance.renderChunk(code);
 
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -260,7 +260,7 @@ describe('rollup-plugin-prettier', () => {
 
     const instance = plugin(options);
     instance.options({});
-    instance.transformBundle('var foo = 0;');
+    instance.renderChunk('var foo = 0;');
 
     // It should not have been touched.
     expect(options).toEqual({
@@ -280,7 +280,7 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo = 0;';
     const instance = plugin(options);
     instance.options({});
-    instance.transformBundle(code);
+    instance.renderChunk(code);
 
     expect(prettier.format).toHaveBeenCalledWith(code, {
       parser: 'babylon',
@@ -304,7 +304,7 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo = 0;';
     const instance = plugin(options);
     instance.options({});
-    instance.transformBundle(code);
+    instance.renderChunk(code);
 
     expect(prettier.format).toHaveBeenCalledWith(code, {
       parser: 'babylon',
@@ -326,7 +326,7 @@ describe('rollup-plugin-prettier', () => {
 
     const code = 'var foo = 0;';
     const instance = plugin(options);
-    instance.transformBundle(code);
+    instance.renderChunk(code);
 
     expect(options).toEqual({cwd});
     expect(prettier.format).toHaveBeenCalledWith(code, {
