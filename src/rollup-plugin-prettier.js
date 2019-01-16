@@ -34,13 +34,13 @@ const prettier = require('prettier');
 
 /**
  * The plugin options that are currently supported.
- * @type {Array<string>}
+ * @type {Set<string>}
  */
-const OPTIONS = [
+const OPTIONS = new Set([
   'sourcemap',
   'sourceMap',
   'cwd',
-];
+]);
 
 module.exports = class RollupPluginPrettier {
   /**
@@ -54,7 +54,7 @@ module.exports = class RollupPluginPrettier {
 
     // Initialize main options.
     this._options = omitBy((options), (value, key) => (
-      OPTIONS.indexOf(key) >= 0
+      OPTIONS.has(key)
     ));
 
     // Try to resolve config file it it exists
