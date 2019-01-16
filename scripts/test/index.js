@@ -25,9 +25,33 @@
 const path = require('path');
 const gulp = require('gulp');
 const jasmine = require('gulp-jasmine');
+const build = require('../build');
 const config = require('../config');
 
-module.exports = function test() {
+/**
+ * Run unit test suite and exit.
+ *
+ * @return {WritableStream} The pipe stream.
+ */
+function test() {
   const spec = path.join(config.test, '**', '*.spec.js');
   return gulp.src(spec).pipe(jasmine());
+}
+
+/**
+ * Watch for changes, and run unit test suite on every change.
+ *
+ * @param {function} done The `done` callback.
+ * @return {void}
+ */
+function tdd(done) {
+  gulp.watch(path.join(config.dist, '**', '*.js'), test);
+  gulp.watch(path.join(config.src, '**', '*.js'), build);
+  gulp.watch(path.join(config.test, '**', '*.js'), test);
+  done();
+}
+
+module.exports = {
+  tdd,
+  test,
 };

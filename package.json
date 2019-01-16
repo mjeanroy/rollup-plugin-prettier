@@ -13,6 +13,7 @@
     "clean": "gulp clean",
     "lint": "gulp lint",
     "build": "gulp build",
+    "tdd": "gulp tdd",
     "test": "gulp test",
     "release": "gulp release:minor",
     "release:patch": "gulp release:patch",
