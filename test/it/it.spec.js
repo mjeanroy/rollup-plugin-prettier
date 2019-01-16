@@ -30,13 +30,14 @@ const rollup = require('rollup');
 const tmp = require('tmp');
 const Q = require('q');
 const babelParser = require('@babel/parser');
+const verifyWarnLogsBecauseOfSourcemap = require('../utils/verify-warn-logs-because-of-source-map.js');
 const prettier = require('../../dist/index.js');
 
 describe('rollup-plugin-prettier', () => {
   let tmpDir;
 
   beforeEach(() => {
-    spyOn(console, 'log').and.callThrough();
+    spyOn(console, 'warn');
   });
 
   beforeEach(() => {
@@ -147,8 +148,6 @@ describe('rollup-plugin-prettier', () => {
       ],
     };
 
-    console.log.and.stub();
-
     rollup.rollup(config)
         .then((bundle) => bundle.write(config.output))
         .then(() => {
@@ -160,7 +159,7 @@ describe('rollup-plugin-prettier', () => {
 
             const content = data.toString();
             expect(content).toContain('//# sourceMappingURL');
-            expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+            verifyWarnLogsBecauseOfSourcemap();
             done();
           });
         })
@@ -185,8 +184,6 @@ describe('rollup-plugin-prettier', () => {
       ],
     };
 
-    console.log.and.stub();
-
     rollup.rollup(config)
         .then((bundle) => (
           Q.all(config.output.map((out) => bundle.write(out)))
@@ -200,7 +197,7 @@ describe('rollup-plugin-prettier', () => {
 
             const content = data.toString();
             expect(content).toContain('//# sourceMappingURL');
-            expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+            verifyWarnLogsBecauseOfSourcemap();
             done();
           });
         })
@@ -227,8 +224,6 @@ describe('rollup-plugin-prettier', () => {
       ],
     };
 
-    console.log.and.stub();
-
     rollup.rollup(config)
         .then((bundle) => bundle.write(config.output))
         .then(() => {
@@ -238,7 +233,7 @@ describe('rollup-plugin-prettier', () => {
               return;
             }
 
-            expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+            verifyWarnLogsBecauseOfSourcemap();
             done();
           });
         })
@@ -265,8 +260,6 @@ describe('rollup-plugin-prettier', () => {
       ],
     };
 
-    console.log.and.stub();
-
     rollup.rollup(config)
         .then((bundle) => bundle.write(config.output))
         .then(() => {
@@ -276,7 +269,7 @@ describe('rollup-plugin-prettier', () => {
               return;
             }
 
-            expect(console.log).toHaveBeenCalledWith('[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required');
+            verifyWarnLogsBecauseOfSourcemap();
             done();
           });
         })

@@ -26,11 +26,13 @@
 
 const path = require('path');
 const prettier = require('prettier');
-const plugin = require('../dist/index.js');
+const verifyWarnLogsBecauseOfSourcemap = require('./utils/verify-warn-logs-because-of-source-map.js');
+const verifyWarnLogsNotTriggered = require('./utils/verify-warn-logs-not-triggered.js');
+const plugin = require('../dist/index-rollup-legacy.js');
 
-describe('rollup-plugin-prettier', () => {
+describe('rollup-plugin-prettier [legacy]', () => {
   beforeEach(() => {
-    spyOn(console, 'log').and.callThrough();
+    spyOn(console, 'warn');
   });
 
   it('should have a name', () => {
@@ -44,9 +46,10 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.renderChunk(code);
+    const outputOptions = {};
+    const result = instance.transformBundle(code, outputOptions);
 
-    expect(console.log).not.toHaveBeenCalled();
+    expect(console.warn).not.toHaveBeenCalled();
     expect(result.map).not.toBeDefined();
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -54,7 +57,7 @@ describe('rollup-plugin-prettier', () => {
     );
   });
 
-  it('should run prettier with sourceMap (camelcase with rollup < 0.48)', () => {
+  it('should run prettier with sourceMap (camelcase) in input options [rollup < 0.48]', () => {
     const instance = plugin({
       parser: 'babylon',
     });
@@ -63,19 +66,11 @@ describe('rollup-plugin-prettier', () => {
       sourceMap: true,
     });
 
-    console.log.and.stub();
-
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.renderChunk(code);
+    const outputOptions = {};
+    const result = instance.transformBundle(code, outputOptions);
 
-    expect(console.log).toHaveBeenCalledWith(
-        '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
-    );
-
-    expect(console.log).toHaveBeenCalledWith(
-        '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
-    );
-
+    verifyWarnLogsBecauseOfSourcemap();
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -83,7 +78,7 @@ describe('rollup-plugin-prettier', () => {
     );
   });
 
-  it('should run prettier with sourcemap (lowercase with rollup >= 0.48)', () => {
+  it('should run prettier with sourcemap (lowercase) in input options [rollup >= 0.48]', () => {
     const instance = plugin({
       parser: 'babylon',
     });
@@ -92,19 +87,11 @@ describe('rollup-plugin-prettier', () => {
       sourcemap: true,
     });
 
-    console.log.and.stub();
-
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.renderChunk(code);
+    const outputOptions = {};
+    const result = instance.transformBundle(code, outputOptions);
 
-    expect(console.log).toHaveBeenCalledWith(
-        '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
-    );
-
-    expect(console.log).toHaveBeenCalledWith(
-        '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
-    );
-
+    verifyWarnLogsBecauseOfSourcemap();
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -112,7 +99,7 @@ describe('rollup-plugin-prettier', () => {
     );
   });
 
-  it('should run prettier with sourcemap in output options', () => {
+  it('should run prettier with sourcemap (lowercase) in output options', () => {
     const instance = plugin({
       parser: 'babylon',
     });
@@ -120,21 +107,11 @@ describe('rollup-plugin-prettier', () => {
     // The input options may not contain `sourcemap` entry with rollup >= 0.53.
     instance.options({});
 
-    console.log.and.stub();
-
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.renderChunk(code, null, {
-      sourcemap: true,
-    });
+    const outputOptions = {sourcemap: true};
+    const result = instance.transformBundle(code, outputOptions);
 
-    expect(console.log).toHaveBeenCalledWith(
-        '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
-    );
-
-    expect(console.log).toHaveBeenCalledWith(
-        '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
-    );
-
+    verifyWarnLogsBecauseOfSourcemap();
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -150,21 +127,11 @@ describe('rollup-plugin-prettier', () => {
     // The input options may not contain `sourcemap` entry with rollup >= 0.53.
     instance.options({});
 
-    console.log.and.stub();
-
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.renderChunk(code, null, {
-      sourceMap: true,
-    });
+    const outputOptions = {sourceMap: true};
+    const result = instance.transformBundle(code, outputOptions);
 
-    expect(console.log).toHaveBeenCalledWith(
-        '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
-    );
-
-    expect(console.log).toHaveBeenCalledWith(
-        '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
-    );
-
+    verifyWarnLogsBecauseOfSourcemap();
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -172,7 +139,47 @@ describe('rollup-plugin-prettier', () => {
     );
   });
 
-  it('should run prettier with sourcemap disabled in output options', () => {
+  it('should run prettier with sourcemap (lowercase) in plugin options', () => {
+    const instance = plugin({
+      sourcemap: true,
+      parser: 'babylon',
+    });
+
+    instance.options({});
+
+    const code = 'var foo=0;var test="hello world";';
+    const outputOptions = {};
+    const result = instance.transformBundle(code, outputOptions);
+
+    verifyWarnLogsBecauseOfSourcemap();
+    expect(result.map).toBeDefined();
+    expect(result.code).toBe(
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
+    );
+  });
+
+  it('should run prettier with sourcemap (camelcase) in plugin options', () => {
+    const instance = plugin({
+      sourceMap: true,
+      parser: 'babylon',
+    });
+
+    instance.options({});
+
+    const code = 'var foo=0;var test="hello world";';
+    const outputOptions = {};
+    const result = instance.transformBundle(code, outputOptions);
+
+    verifyWarnLogsBecauseOfSourcemap();
+    expect(result.map).toBeDefined();
+    expect(result.code).toBe(
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
+    );
+  });
+
+  it('should run prettier with sourcemap (lowercase) disabled in output options', () => {
     const instance = plugin({
       parser: 'babylon',
     });
@@ -180,14 +187,31 @@ describe('rollup-plugin-prettier', () => {
     // The input options may not contain `sourcemap` entry with rollup >= 0.53.
     instance.options({});
 
-    console.log.and.stub();
-
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.renderChunk(code, null, {
-      sourcemap: false,
+    const outputOptions = {sourcemap: false};
+    const result = instance.transformBundle(code, outputOptions);
+
+    verifyWarnLogsNotTriggered();
+    expect(result.map).not.toBeDefined();
+    expect(result.code).toBe(
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
+    );
+  });
+
+  it('should run prettier with sourcemap (camelcase) disabled in output options', () => {
+    const instance = plugin({
+      parser: 'babylon',
     });
 
-    expect(console.log).not.toHaveBeenCalled();
+    // The input options may not contain `sourcemap` entry with rollup >= 0.53.
+    instance.options({});
+
+    const code = 'var foo=0;var test="hello world";';
+    const outputOptions = {sourceMap: false};
+    const result = instance.transformBundle(code, outputOptions);
+
+    verifyWarnLogsNotTriggered();
     expect(result.map).not.toBeDefined();
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -202,13 +226,9 @@ describe('rollup-plugin-prettier', () => {
     };
 
     const instance = plugin(options);
-
-    instance.options({
-      sourceMap: false,
-    });
-
     const code = 'var foo=0;var test="hello world";';
-    const result = instance.renderChunk(code);
+    const outputOptions = {sourcemap: false};
+    const result = instance.transformBundle(code, outputOptions);
 
     expect(result.code).toBe(
         `var foo = 0;\n` +
@@ -221,12 +241,9 @@ describe('rollup-plugin-prettier', () => {
       parser: 'babylon',
     });
 
-    instance.options({
-      sourceMap: false,
-    });
-
     const code = 'var foo    =    0;\nvar test = "hello world";';
-    const result = instance.renderChunk(code);
+    const outputOptions = {sourcemap: false};
+    const result = instance.transformBundle(code, outputOptions);
 
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -239,12 +256,9 @@ describe('rollup-plugin-prettier', () => {
       parser: 'babylon',
     });
 
-    instance.options({
-      sourceMap: false,
-    });
-
     const code = 'var foo    =    0;var test = "hello world";';
-    const result = instance.renderChunk(code);
+    const outputOptions = {sourcemap: false};
+    const result = instance.transformBundle(code, outputOptions);
 
     expect(result.code).toBe(
         'var foo = 0;\n' +
@@ -255,32 +269,33 @@ describe('rollup-plugin-prettier', () => {
   it('should avoid side effect and do not modify plugin options', () => {
     const options = {
       parser: 'babylon',
-      sourceMap: false,
+      sourcemap: false,
     };
 
     const instance = plugin(options);
-    instance.options({});
-    instance.renderChunk('var foo = 0;');
+    const code = 'var foo = 0;';
+    const outputOptions = {};
+    instance.transformBundle(code, outputOptions);
 
     // It should not have been touched.
     expect(options).toEqual({
       parser: 'babylon',
-      sourceMap: false,
+      sourcemap: false,
     });
   });
 
   it('should run prettier without sourcemap options', () => {
     const options = {
       parser: 'babylon',
-      sourceMap: false,
+      sourcemap: false,
     };
 
     spyOn(prettier, 'format').and.callThrough();
 
     const code = 'var foo = 0;';
     const instance = plugin(options);
-    instance.options({});
-    instance.renderChunk(code);
+    const outputOptions = {};
+    instance.transformBundle(code, outputOptions);
 
     expect(prettier.format).toHaveBeenCalledWith(code, {
       parser: 'babylon',
@@ -288,14 +303,14 @@ describe('rollup-plugin-prettier', () => {
 
     expect(options).toEqual({
       parser: 'babylon',
-      sourceMap: false,
+      sourcemap: false,
     });
   });
 
   it('should run prettier without sourcemap options and custom other options', () => {
     const options = {
       parser: 'babylon',
-      sourceMap: false,
+      sourcemap: false,
       singleQuote: true,
     };
 
@@ -303,8 +318,8 @@ describe('rollup-plugin-prettier', () => {
 
     const code = 'var foo = 0;';
     const instance = plugin(options);
-    instance.options({});
-    instance.renderChunk(code);
+    const outputOptions = {};
+    instance.transformBundle(code, outputOptions);
 
     expect(prettier.format).toHaveBeenCalledWith(code, {
       parser: 'babylon',
@@ -313,7 +328,7 @@ describe('rollup-plugin-prettier', () => {
 
     expect(options).toEqual({
       parser: 'babylon',
-      sourceMap: false,
+      sourcemap: false,
       singleQuote: true,
     });
   });
@@ -324,9 +339,10 @@ describe('rollup-plugin-prettier', () => {
 
     spyOn(prettier, 'format').and.callThrough();
 
-    const code = 'var foo = 0;';
     const instance = plugin(options);
-    instance.renderChunk(code);
+    const code = 'var foo = 0;';
+    const outputOptions = {};
+    instance.transformBundle(code, outputOptions);
 
     expect(options).toEqual({cwd});
     expect(prettier.format).toHaveBeenCalledWith(code, {

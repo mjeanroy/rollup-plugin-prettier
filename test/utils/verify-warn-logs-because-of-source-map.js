@@ -22,10 +22,17 @@
  * SOFTWARE.
  */
 
-'use strict';
+/**
+ * Verify that warning have been logged to the console because of sourcemap.
+ *
+ * @return {void}
+ */
+module.exports = function verifyWarnLogsBecauseOfSourcemap() {
+  expect(console.warn).toHaveBeenCalledWith(
+      '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
+  );
 
-const rollup = require('rollup');
-const VERSION = rollup.VERSION || '0';
-const MAJOR_VERSION = Number(VERSION.split('.')[0]) || 0;
-const IS_ROLLUP_LEGACY = MAJOR_VERSION === 0;
-module.exports = IS_ROLLUP_LEGACY ? require('./index-rollup-legacy.js') : require('./index-rollup-stable.js');
+  expect(console.warn).toHaveBeenCalledWith(
+      '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
+  );
+};
