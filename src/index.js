@@ -92,10 +92,11 @@ module.exports = (options) => {
      * Function called by `rollup` before generating final bundle.
      *
      * @param {string} source Souce code of the final bundle.
+     * @param {Object} chunkInfo Chunk info.
      * @param {Object} outputOptions Output option.
      * @return {Object} The result containing a `code` property and, if a enabled, a `map` property.
      */
-    transformBundle(source, outputOptions) {
+    renderChunk(source, chunkInfo, outputOptions) {
       const output = prettier.format(source, newOptions);
       const outputOptionsSourcemap = outputOptions == null ? null : isSourceMapEnabled(outputOptions);
 
