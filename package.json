@@ -54,7 +54,7 @@
     "gulp-git": "2.9.0",
     "gulp-jasmine": "4.0.0",
     "gulp-prettier": "2.1.0",
-    "jasmine-core": "3.3.0",
+    "jasmine-core": "3.4.0",
     "q": "1.5.1",
     "rollup": "1.8.0",
     "tmp": "0.1.0"
