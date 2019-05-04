@@ -56,7 +56,7 @@
     "gulp-prettier": "2.1.0",
     "jasmine-core": "3.4.0",
     "q": "1.5.1",
-    "rollup": "1.10.1",
+    "rollup": "1.11.2",
     "tmp": "0.1.0"
   }
 }
