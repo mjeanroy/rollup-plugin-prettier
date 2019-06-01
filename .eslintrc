@@ -1,12 +1,32 @@
 {
-  "extends": "google",
+  "extends": [
+    "eslint:recommended",
+    "google"
+  ],
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 6
   },
   "env": {
+    "es6": true,
     "node": true
   },
   "rules": {
-    "max-len": [2, 140, 2]
+    "max-len": [2, 140, 2],
+    "no-console": [2, {
+      "allow": ["warn", "error"]
+    }],
+    "valid-jsdoc": [2, {
+      "requireReturn": true,
+      "requireParamDescription": true,
+      "requireReturnDescription": true,
+      "prefer": {
+        "return": "return",
+        "arg": "param",
+        "argument": "param"
+      },
+      "preferType": {
+        "object": "object"
+      }
+    }]
   }
 }
