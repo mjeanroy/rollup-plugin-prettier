@@ -39,7 +39,7 @@
     "prettier": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.6.4",
+    "@babel/core": "7.7.2",
     "@babel/parser": "7.6.4",
     "@babel/preset-env": "7.6.3",
     "del": "5.1.0",
