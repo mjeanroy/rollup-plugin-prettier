@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.8.7",
-    "@babel/parser": "7.8.6",
+    "@babel/parser": "7.8.7",
     "@babel/preset-env": "7.8.6",
     "del": "5.1.0",
     "eslint": "6.8.0",
