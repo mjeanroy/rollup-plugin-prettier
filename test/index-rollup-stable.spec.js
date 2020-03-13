@@ -28,11 +28,12 @@ const path = require('path');
 const prettier = require('prettier');
 const verifyWarnLogsBecauseOfSourcemap = require('./utils/verify-warn-logs-because-of-source-map.js');
 const verifyWarnLogsNotTriggered = require('./utils/verify-warn-logs-not-triggered.js');
+const installWarnSpy = require('./utils/install-warn-spy.js');
 const plugin = require('../dist/index-rollup-stable.js');
 
 describe('rollup-plugin-prettier [stable]', () => {
   beforeEach(() => {
-    spyOn(console, 'warn');
+    installWarnSpy();
   });
 
   it('should have a name', () => {
@@ -42,7 +43,7 @@ describe('rollup-plugin-prettier [stable]', () => {
 
   it('should run prettier', () => {
     const instance = plugin({
-      parser: 'babylon',
+      parser: 'babel',
     });
 
     const code = 'var foo=0;var test="hello world";';
@@ -60,7 +61,7 @@ describe('rollup-plugin-prettier [stable]', () => {
 
   it('should run prettier with sourcemap in output options', () => {
     const instance = plugin({
-      parser: 'babylon',
+      parser: 'babel',
     });
 
     const code = 'var foo=0;var test="hello world";';
@@ -79,7 +80,7 @@ describe('rollup-plugin-prettier [stable]', () => {
   it('should run prettier with sourcemap (lowercase) in plugin options', () => {
     const instance = plugin({
       sourcemap: true,
-      parser: 'babylon',
+      parser: 'babel',
     });
 
     const code = 'var foo=0;var test="hello world";';
@@ -98,7 +99,7 @@ describe('rollup-plugin-prettier [stable]', () => {
   it('should run prettier with sourcemap (camelcase) in plugin options', () => {
     const instance = plugin({
       sourceMap: true,
-      parser: 'babylon',
+      parser: 'babel',
     });
 
     const code = 'var foo=0;var test="hello world";';
@@ -116,7 +117,7 @@ describe('rollup-plugin-prettier [stable]', () => {
 
   it('should run prettier with sourcemap disabled in output options', () => {
     const instance = plugin({
-      parser: 'babylon',
+      parser: 'babel',
     });
 
     const code = 'var foo=0;var test="hello world";';
@@ -134,7 +135,7 @@ describe('rollup-plugin-prettier [stable]', () => {
 
   it('should run prettier with options', () => {
     const options = {
-      parser: 'babylon',
+      parser: 'babel',
       singleQuote: true,
     };
 
@@ -152,7 +153,7 @@ describe('rollup-plugin-prettier [stable]', () => {
 
   it('should remove unnecessary spaces', () => {
     const instance = plugin({
-      parser: 'babylon',
+      parser: 'babel',
     });
 
     const code = 'var foo    =    0;\nvar test = "hello world";';
@@ -168,7 +169,7 @@ describe('rollup-plugin-prettier [stable]', () => {
 
   it('should add and remove characters', () => {
     const instance = plugin({
-      parser: 'babylon',
+      parser: 'babel',
     });
 
     const code = 'var foo    =    0;var test = "hello world";';
@@ -184,7 +185,7 @@ describe('rollup-plugin-prettier [stable]', () => {
 
   it('should avoid side effect and do not modify plugin options', () => {
     const options = {
-      parser: 'babylon',
+      parser: 'babel',
       sourcemap: false,
     };
 
@@ -196,14 +197,14 @@ describe('rollup-plugin-prettier [stable]', () => {
 
     // It should not have been touched.
     expect(options).toEqual({
-      parser: 'babylon',
+      parser: 'babel',
       sourcemap: false,
     });
   });
 
   it('should run prettier without sourcemap options', () => {
     const options = {
-      parser: 'babylon',
+      parser: 'babel',
       sourcemap: false,
     };
 
@@ -216,18 +217,18 @@ describe('rollup-plugin-prettier [stable]', () => {
     instance.renderChunk(code, chunk, outputOptions);
 
     expect(prettier.format).toHaveBeenCalledWith(code, {
-      parser: 'babylon',
+      parser: 'babel',
     });
 
     expect(options).toEqual({
-      parser: 'babylon',
+      parser: 'babel',
       sourcemap: false,
     });
   });
 
   it('should run prettier without sourcemap options and custom other options', () => {
     const options = {
-      parser: 'babylon',
+      parser: 'babel',
       sourcemap: false,
       singleQuote: true,
     };
@@ -241,12 +242,12 @@ describe('rollup-plugin-prettier [stable]', () => {
     instance.renderChunk(code, chunk, outputOptions);
 
     expect(prettier.format).toHaveBeenCalledWith(code, {
-      parser: 'babylon',
+      parser: 'babel',
       singleQuote: true,
     });
 
     expect(options).toEqual({
-      parser: 'babylon',
+      parser: 'babel',
       sourcemap: false,
       singleQuote: true,
     });
@@ -254,7 +255,11 @@ describe('rollup-plugin-prettier [stable]', () => {
 
   it('should run prettier using config file from given current working directory', () => {
     const cwd = path.join(__dirname, 'fixtures');
-    const options = {cwd};
+    const parser = 'babel';
+    const options = {
+      parser,
+      cwd,
+    };
 
     spyOn(prettier, 'format').and.callThrough();
 
@@ -264,9 +269,13 @@ describe('rollup-plugin-prettier [stable]', () => {
     const outputOptions = {};
     instance.renderChunk(code, chunk, outputOptions);
 
-    expect(options).toEqual({cwd});
+    expect(options).toEqual({
+      parser,
+      cwd,
+    });
+
     expect(prettier.format).toHaveBeenCalledWith(code, {
-      parser: 'babylon',
+      parser,
       singleQuote: true,
       tabWidth: 2,
     });

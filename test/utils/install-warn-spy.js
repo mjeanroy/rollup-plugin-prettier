@@ -22,8 +22,14 @@
  * SOFTWARE.
  */
 
-module.exports = {
-  parser: 'babel',
-  singleQuote: true,
-  tabWidth: 2,
+const startsWith = require('lodash.startswith');
+
+module.exports = function installWarnSpy() {
+  const warn = console.warn;
+
+  spyOn(console, 'warn').and.callFake((msg, ...args) => {
+    if (!startsWith(msg, '[rollup-plugin-prettier]')) {
+      warn(msg, ...args);
+    }
+  });
 };

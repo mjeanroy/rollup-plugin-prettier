@@ -29,20 +29,27 @@ const prettier = require('prettier');
 const RollupPluginPrettier = require('../dist/rollup-plugin-prettier.js');
 const verifyWarnLogsBecauseOfSourcemap = require('./utils/verify-warn-logs-because-of-source-map.js');
 const verifyWarnLogsNotTriggered = require('./utils/verify-warn-logs-not-triggered.js');
+const installWarnSpy = require('./utils/install-warn-spy.js');
 
 describe('RollupPluginPrettier', () => {
   beforeEach(() => {
-    spyOn(console, 'warn');
+    installWarnSpy();
   });
 
   it('should create the plugin with a name', () => {
-    const plugin = new RollupPluginPrettier();
+    const plugin = new RollupPluginPrettier({
+      parser: 'babel',
+    });
+
     expect(plugin.name).toBe('rollup-plugin-prettier');
     expect(plugin.getSourcemap()).toBeNull();
   });
 
   it('should run esformatter without sourcemap by default', () => {
-    const plugin = new RollupPluginPrettier();
+    const plugin = new RollupPluginPrettier({
+      parser: 'babel',
+    });
+
     const code = 'var foo=0;var test="hello world";';
     const result = plugin.reformat(code);
 
@@ -55,7 +62,11 @@ describe('RollupPluginPrettier', () => {
   });
 
   it('should run prettier with sourcemap (lowercase)', () => {
-    const plugin = new RollupPluginPrettier({sourcemap: true});
+    const plugin = new RollupPluginPrettier({
+      parser: 'babel',
+      sourcemap: true,
+    });
+
     const code = 'var foo=0;var test="hello world";';
     const result = plugin.reformat(code);
 
@@ -70,7 +81,11 @@ describe('RollupPluginPrettier', () => {
   });
 
   it('should run prettier with sourceMap (camelcase)', () => {
-    const plugin = new RollupPluginPrettier({sourceMap: true});
+    const plugin = new RollupPluginPrettier({
+      parser: 'babel',
+      sourceMap: true,
+    });
+
     const code = 'var foo=0;var test="hello world";';
     const result = plugin.reformat(code);
 
@@ -85,7 +100,10 @@ describe('RollupPluginPrettier', () => {
   });
 
   it('should run prettier with sourcemap if it has been enabled', () => {
-    const plugin = new RollupPluginPrettier();
+    const plugin = new RollupPluginPrettier({
+      parser: 'babel',
+    });
+
     expect(plugin.getSourcemap()).toBeNull();
 
     // Enable sourcemap explicitely.
@@ -105,7 +123,11 @@ describe('RollupPluginPrettier', () => {
   });
 
   it('should run prettier with sourcemap enable in reformat', () => {
-    const plugin = new RollupPluginPrettier({sourcemap: false});
+    const plugin = new RollupPluginPrettier({
+      parser: 'babel',
+      sourcemap: false,
+    });
+
     const code = 'var foo=0;var test="hello world";';
     const result = plugin.reformat(code, true);
 
@@ -120,7 +142,11 @@ describe('RollupPluginPrettier', () => {
   });
 
   it('should run prettier without sourcemap enable in reformat', () => {
-    const plugin = new RollupPluginPrettier({sourcemap: true});
+    const plugin = new RollupPluginPrettier({
+      parser: 'babel',
+      sourcemap: true,
+    });
+
     const code = 'var foo=0;var test="hello world";';
     const result = plugin.reformat(code, false);
 
@@ -136,7 +162,12 @@ describe('RollupPluginPrettier', () => {
 
   it('should run prettier using config file from given current working directory', () => {
     const cwd = path.join(__dirname, 'fixtures');
-    const options = {cwd};
+    const parser = 'babel';
+    const options = {
+      parser,
+      cwd,
+    };
+
     const plugin = new RollupPluginPrettier(options);
 
     spyOn(prettier, 'format').and.callThrough();
@@ -144,10 +175,15 @@ describe('RollupPluginPrettier', () => {
     const code = 'var foo = 0;';
     const result = plugin.reformat(code);
 
-    expect(options).toEqual({cwd});
     expect(result.code).toBe('var foo = 0;\n');
+
+    expect(options).toEqual({
+      parser,
+      cwd,
+    });
+
     expect(prettier.format).toHaveBeenCalledWith(code, {
-      parser: 'babylon',
+      parser,
       singleQuote: true,
       tabWidth: 2,
     });

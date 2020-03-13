@@ -61,7 +61,7 @@ describe('rollup-plugin-prettier', () => {
 
       plugins: [
         prettier({
-          parser: 'babylon',
+          parser: 'babel',
         }),
       ],
     };
@@ -88,7 +88,7 @@ describe('rollup-plugin-prettier', () => {
         });
   });
 
-  it('should run prettier with @babel/parser instead of babylon', (done) => {
+  it('should run prettier with @babel/parser instead of babel', (done) => {
     const output = path.join(tmpDir.name, 'bundle.js');
     const config = {
       input: getBundlePath(),
@@ -143,7 +143,7 @@ describe('rollup-plugin-prettier', () => {
 
       plugins: [
         prettier({
-          parser: 'babylon',
+          parser: 'babel',
         }),
       ],
     };
@@ -179,7 +179,7 @@ describe('rollup-plugin-prettier', () => {
 
       plugins: [
         prettier({
-          parser: 'babylon',
+          parser: 'babel',
         }),
       ],
     };
@@ -218,7 +218,7 @@ describe('rollup-plugin-prettier', () => {
 
       plugins: [
         prettier({
-          parser: 'babylon',
+          parser: 'babel',
           sourcemap: true,
         }),
       ],
@@ -254,7 +254,7 @@ describe('rollup-plugin-prettier', () => {
 
       plugins: [
         prettier({
-          parser: 'babylon',
+          parser: 'babel',
           sourceMap: true,
         }),
       ],
