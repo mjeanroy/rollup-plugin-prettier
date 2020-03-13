@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-const del = require('del');
+const rimraf = require('rimraf');
 const config = require('../config');
 
-module.exports = function clean() {
-  return del(config.dist);
+module.exports = function clean(done) {
+  return rimraf(config.dist, done);
 };
