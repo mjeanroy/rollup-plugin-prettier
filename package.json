@@ -40,9 +40,9 @@
     "prettier": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.8.7",
-    "@babel/parser": "7.8.8",
-    "@babel/preset-env": "7.8.7",
+    "@babel/core": "7.9.0",
+    "@babel/parser": "7.9.0",
+    "@babel/preset-env": "7.9.0",
     "@types/prettier": "1.19.0",
     "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
