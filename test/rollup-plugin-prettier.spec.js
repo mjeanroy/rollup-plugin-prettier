@@ -78,25 +78,6 @@ describe('RollupPluginPrettier', () => {
     );
   });
 
-  it('should run prettier with sourceMap (camelcase)', () => {
-    const plugin = new RollupPluginPrettier({
-      parser: 'babel',
-      sourceMap: true,
-    });
-
-    const code = 'var foo=0;var test="hello world";';
-    const result = plugin.reformat(code);
-
-    expect(plugin.getSourcemap()).toBe(true);
-
-    verifyWarnLogsBecauseOfSourcemap();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
-  });
-
   it('should run prettier with sourcemap if it has been enabled', () => {
     const plugin = new RollupPluginPrettier({
       parser: 'babel',

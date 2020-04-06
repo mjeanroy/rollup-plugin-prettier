@@ -240,42 +240,6 @@ describe('rollup-plugin-prettier', () => {
         });
   });
 
-  it('should enable sourcemap (camelcase) on plugin', (done) => {
-    const output = path.join(tmpDir.name, 'bundle.js');
-    const config = {
-      input: getBundlePath(),
-
-      output: {
-        file: output,
-        format: 'es',
-      },
-
-      plugins: [
-        prettier({
-          parser: 'babel',
-          sourceMap: true,
-        }),
-      ],
-    };
-
-    rollup.rollup(config)
-        .then((bundle) => bundle.write(config.output))
-        .then(() => {
-          fs.readFile(output, 'utf8', (err, data) => {
-            if (err) {
-              done.fail(err);
-              return;
-            }
-
-            verifyWarnLogsBecauseOfSourcemap();
-            done();
-          });
-        })
-        .catch((err) => {
-          done.fail(err);
-        });
-  });
-
   /**
    * Get the output bundle absolute path.
    *

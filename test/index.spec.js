@@ -29,7 +29,7 @@ import {verifyWarnLogsBecauseOfSourcemap} from './utils/verify-warn-logs-because
 import {verifyWarnLogsNotTriggered} from './utils/verify-warn-logs-not-triggered.js';
 import {installWarnSpy} from './utils/install-warn-spy.js';
 
-describe('rollup-plugin-prettier [stable]', () => {
+describe('rollup-plugin-prettier', () => {
   beforeEach(() => {
     installWarnSpy();
   });
@@ -78,25 +78,6 @@ describe('rollup-plugin-prettier [stable]', () => {
   it('should run prettier with sourcemap (lowercase) in plugin options', () => {
     const instance = rollupPluginPrettier({
       sourcemap: true,
-      parser: 'babel',
-    });
-
-    const code = 'var foo=0;var test="hello world";';
-    const chunk = {isEntry: false, imports: []};
-    const outputOptions = {};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    verifyWarnLogsBecauseOfSourcemap();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
-  });
-
-  it('should run prettier with sourcemap (camelcase) in plugin options', () => {
-    const instance = rollupPluginPrettier({
-      sourceMap: true,
       parser: 'babel',
     });
 
