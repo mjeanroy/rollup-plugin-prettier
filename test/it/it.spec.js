@@ -22,16 +22,14 @@
  * SOFTWARE.
  */
 
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const rollup = require('rollup');
-const tmp = require('tmp');
-const Q = require('q');
-const babelParser = require('@babel/parser');
-const prettier = require('../../src/index.js');
-const verifyWarnLogsBecauseOfSourcemap = require('../utils/verify-warn-logs-because-of-source-map.js');
+import fs from 'fs';
+import path from 'path';
+import tmp from 'tmp';
+import Q from 'q';
+import * as rollup from 'rollup';
+import * as babelParser from '@babel/parser';
+import prettier from '../../src/index.js';
+import {verifyWarnLogsBecauseOfSourcemap} from '../utils/verify-warn-logs-because-of-source-map.js';
 
 describe('rollup-plugin-prettier', () => {
   let tmpDir;

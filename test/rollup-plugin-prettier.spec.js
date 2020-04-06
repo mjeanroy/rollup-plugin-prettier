@@ -22,14 +22,12 @@
  * SOFTWARE.
  */
 
-'use strict';
-
-const path = require('path');
-const prettier = require('prettier');
-const RollupPluginPrettier = require('../src/rollup-plugin-prettier.js');
-const verifyWarnLogsBecauseOfSourcemap = require('./utils/verify-warn-logs-because-of-source-map.js');
-const verifyWarnLogsNotTriggered = require('./utils/verify-warn-logs-not-triggered.js');
-const installWarnSpy = require('./utils/install-warn-spy.js');
+import path from 'path';
+import prettier from 'prettier';
+import {RollupPluginPrettier} from '../src/rollup-plugin-prettier.js';
+import {verifyWarnLogsBecauseOfSourcemap} from './utils/verify-warn-logs-because-of-source-map.js';
+import {verifyWarnLogsNotTriggered} from './utils/verify-warn-logs-not-triggered.js';
+import {installWarnSpy} from './utils/install-warn-spy.js';
 
 describe('RollupPluginPrettier', () => {
   beforeEach(() => {

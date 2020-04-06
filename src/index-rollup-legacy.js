@@ -22,13 +22,17 @@
  * SOFTWARE.
  */
 
-'use strict';
+import hasIn from 'lodash.hasin';
+import isNil from 'lodash.isnil';
+import {RollupPluginPrettier} from './rollup-plugin-prettier.js';
 
-const hasIn = require('lodash.hasin');
-const isNil = require('lodash.isnil');
-const RollupPluginPrettier = require('./rollup-plugin-prettier.js');
-
-module.exports = (options) => {
+/**
+ * Create rollup plugin compatible with rollup < 1.0.0
+ *
+ * @param {Object} options Plugin options.
+ * @return {Object} Plugin instance.
+ */
+export function rollupPluginPrettierLegacy(options) {
   const plugin = new RollupPluginPrettier(options);
 
   return {
@@ -76,7 +80,7 @@ module.exports = (options) => {
       return plugin.reformat(source, sourcemap);
     },
   };
-};
+}
 
 /**
  * Check if `sourcemap` option is enable or not.

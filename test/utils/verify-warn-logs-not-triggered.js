@@ -27,7 +27,7 @@
  *
  * @return {void}
  */
-module.exports = function verifyWarnLogsNotTriggered() {
+export function verifyWarnLogsNotTriggered() {
   expect(console.warn).not.toHaveBeenCalledWith(
       '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
   );
@@ -35,4 +35,4 @@ module.exports = function verifyWarnLogsNotTriggered() {
   expect(console.warn).not.toHaveBeenCalledWith(
       '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
   );
-};
+}

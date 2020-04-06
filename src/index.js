@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
-'use strict';
+import * as rollup from 'rollup';
+import {rollupPluginPrettierLegacy} from './index-rollup-legacy';
+import {rollupPluginPrettierStable} from './index-rollup-stable';
 
-const rollup = require('rollup');
 const VERSION = rollup.VERSION || '0';
 const MAJOR_VERSION = Number(VERSION.split('.')[0]) || 0;
 const IS_ROLLUP_LEGACY = MAJOR_VERSION === 0;
-module.exports = IS_ROLLUP_LEGACY ? require('./index-rollup-legacy.js') : require('./index-rollup-stable.js');
+const plugin = IS_ROLLUP_LEGACY ? rollupPluginPrettierLegacy : rollupPluginPrettierStable;
+
+export default plugin;

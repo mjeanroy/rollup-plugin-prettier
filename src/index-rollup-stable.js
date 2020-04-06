@@ -22,11 +22,15 @@
  * SOFTWARE.
  */
 
-'use strict';
+import {RollupPluginPrettier} from './rollup-plugin-prettier.js';
 
-const RollupPluginPrettier = require('./rollup-plugin-prettier.js');
-
-module.exports = (options) => {
+/**
+ * Create rollup plugin compatible with rollup >= 1.0.0
+ *
+ * @param {Object} options Plugin options.
+ * @return {Object} Plugin instance.
+ */
+export function rollupPluginPrettierStable(options) {
   const plugin = new RollupPluginPrettier(options);
 
   return {
@@ -48,4 +52,4 @@ module.exports = (options) => {
       return plugin.reformat(source, outputOptions.sourcemap);
     },
   };
-};
+}

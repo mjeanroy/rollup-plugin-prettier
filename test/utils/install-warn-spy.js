@@ -22,9 +22,14 @@
  * SOFTWARE.
  */
 
-const startsWith = require('lodash.startswith');
+import startsWith from 'lodash.startswith';
 
-module.exports = function installWarnSpy() {
+/**
+ * Install smart `console.warn` spy.
+ *
+ * @return {void}
+ */
+export function installWarnSpy() {
   const warn = console.warn;
 
   spyOn(console, 'warn').and.callFake((msg, ...args) => {
@@ -32,4 +37,4 @@ module.exports = function installWarnSpy() {
       warn(msg, ...args);
     }
   });
-};
+}

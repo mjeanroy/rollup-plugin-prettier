@@ -22,14 +22,12 @@
  * SOFTWARE.
  */
 
-'use strict';
-
-const path = require('path');
-const prettier = require('prettier');
-const plugin = require('../src/index-rollup-legacy.js');
-const verifyWarnLogsBecauseOfSourcemap = require('./utils/verify-warn-logs-because-of-source-map.js');
-const verifyWarnLogsNotTriggered = require('./utils/verify-warn-logs-not-triggered.js');
-const installWarnSpy = require('./utils/install-warn-spy.js');
+import path from 'path';
+import prettier from 'prettier';
+import {rollupPluginPrettierLegacy} from '../src/index-rollup-legacy.js';
+import {verifyWarnLogsBecauseOfSourcemap} from './utils/verify-warn-logs-because-of-source-map.js';
+import {verifyWarnLogsNotTriggered} from './utils/verify-warn-logs-not-triggered.js';
+import {installWarnSpy} from './utils/install-warn-spy.js';
 
 describe('rollup-plugin-prettier [legacy]', () => {
   beforeEach(() => {
@@ -37,12 +35,12 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should have a name', () => {
-    const instance = plugin();
+    const instance = rollupPluginPrettierLegacy();
     expect(instance.name).toBe('rollup-plugin-prettier');
   });
 
   it('should run prettier', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -59,7 +57,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should run prettier with sourceMap (camelcase) in input options [rollup < 0.48]', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -80,7 +78,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should run prettier with sourcemap (lowercase) in input options [rollup >= 0.48]', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -101,7 +99,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should run prettier with sourcemap (lowercase) in output options', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -121,7 +119,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should run prettier with sourcemap in output options (camelcase format)', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -141,7 +139,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should run prettier with sourcemap (lowercase) in plugin options', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       sourcemap: true,
       parser: 'babel',
     });
@@ -161,7 +159,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should run prettier with sourcemap (camelcase) in plugin options', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       sourceMap: true,
       parser: 'babel',
     });
@@ -181,7 +179,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should run prettier with sourcemap (lowercase) disabled in output options', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -201,7 +199,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should run prettier with sourcemap (camelcase) disabled in output options', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -226,7 +224,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
       singleQuote: true,
     };
 
-    const instance = plugin(options);
+    const instance = rollupPluginPrettierLegacy(options);
     const code = 'var foo=0;var test="hello world";';
     const outputOptions = {sourcemap: false};
     const result = instance.transformBundle(code, outputOptions);
@@ -238,7 +236,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should remove unnecessary spaces', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -253,7 +251,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
   });
 
   it('should add and remove characters', () => {
-    const instance = plugin({
+    const instance = rollupPluginPrettierLegacy({
       parser: 'babel',
     });
 
@@ -273,7 +271,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
       sourcemap: false,
     };
 
-    const instance = plugin(options);
+    const instance = rollupPluginPrettierLegacy(options);
     const code = 'var foo = 0;';
     const outputOptions = {};
     instance.transformBundle(code, outputOptions);
@@ -294,7 +292,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
     spyOn(prettier, 'format').and.callThrough();
 
     const code = 'var foo = 0;';
-    const instance = plugin(options);
+    const instance = rollupPluginPrettierLegacy(options);
     const outputOptions = {};
     instance.transformBundle(code, outputOptions);
 
@@ -318,7 +316,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
     spyOn(prettier, 'format').and.callThrough();
 
     const code = 'var foo = 0;';
-    const instance = plugin(options);
+    const instance = rollupPluginPrettierLegacy(options);
     const outputOptions = {};
     instance.transformBundle(code, outputOptions);
 
@@ -344,7 +342,7 @@ describe('rollup-plugin-prettier [legacy]', () => {
 
     spyOn(prettier, 'format').and.callThrough();
 
-    const instance = plugin(options);
+    const instance = rollupPluginPrettierLegacy(options);
     const code = 'var foo = 0;';
     const outputOptions = {};
     instance.transformBundle(code, outputOptions);

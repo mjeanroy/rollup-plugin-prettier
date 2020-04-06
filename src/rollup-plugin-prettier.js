@@ -22,15 +22,13 @@
  * SOFTWARE.
  */
 
-'use strict';
-
-const hasIn = require('lodash.hasin');
-const isEmpty = require('lodash.isempty');
-const isNil = require('lodash.isnil');
-const omitBy = require('lodash.omitby');
-const MagicString = require('magic-string');
-const diff = require('diff');
-const prettier = require('prettier');
+import hasIn from 'lodash.hasin';
+import isEmpty from 'lodash.isempty';
+import isNil from 'lodash.isnil';
+import omitBy from 'lodash.omitby';
+import MagicString from 'magic-string';
+import * as diff from 'diff';
+import prettier from 'prettier';
 
 /**
  * The plugin options that are currently supported.
@@ -42,7 +40,12 @@ const OPTIONS = new Set([
   'cwd',
 ]);
 
-module.exports = class RollupPluginPrettier {
+/**
+ * The plugin.
+ *
+ * @class
+ */
+export class RollupPluginPrettier {
   /**
    * Initialize plugin & prettier.
    *
@@ -148,4 +151,4 @@ module.exports = class RollupPluginPrettier {
       }),
     };
   }
-};
+}
