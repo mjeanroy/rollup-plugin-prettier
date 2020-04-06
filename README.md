@@ -65,6 +65,9 @@ module.exports = {
 
 ## ChangeLogs
 
+- 0.7.0
+  - Dependency updates.
+  - Update rollup peer dependency version.
 - 0.6.0
   - Add support for rollup >= 1 (thanks to [@Andarist](https://github.com/Andarist), see [#211](https://github.com/mjeanroy/rollup-plugin-prettier/pull/211))
   - Various dependency updates.
