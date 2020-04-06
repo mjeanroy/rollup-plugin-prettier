@@ -3,7 +3,6 @@
   "version": "0.6.0",
   "description": "Run prettier formatter with rollup",
   "main": "dist/index.js",
-  "types": "types/index.d.ts",
   "author": "Mickael Jeanroy <mickael.jeanroy@gmail.com>",
   "license": "MIT",
   "repository": {
