@@ -27,7 +27,7 @@
     "prettier"
   ],
   "peerDependencies": {
-    "rollup": "<2"
+    "rollup": "<3"
   },
   "dependencies": {
     "diff": "4.0.2",
@@ -43,7 +43,6 @@
     "@babel/parser": "7.9.4",
     "@babel/preset-env": "7.9.0",
     "@babel/register": "7.9.0",
-    "@types/prettier": "1.19.1",
     "babel-plugin-add-module-exports": "1.0.2",
     "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
