@@ -29,9 +29,11 @@ node_modules/
 /test
 /src
 /scripts
+/.babelrc
 /.eslintrc
 /.eslintignore
-/.babelrc
+/.gitattributes
+/.github
 /.nvmrc
 /.travis.yml
 /gulpfile.js
