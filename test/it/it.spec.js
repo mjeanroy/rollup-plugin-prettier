@@ -30,8 +30,8 @@ const rollup = require('rollup');
 const tmp = require('tmp');
 const Q = require('q');
 const babelParser = require('@babel/parser');
+const prettier = require('../../src/index.js');
 const verifyWarnLogsBecauseOfSourcemap = require('../utils/verify-warn-logs-because-of-source-map.js');
-const prettier = require('../../dist/index.js');
 
 describe('rollup-plugin-prettier', () => {
   let tmpDir;

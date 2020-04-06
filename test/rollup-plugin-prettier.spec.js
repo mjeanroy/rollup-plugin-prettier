@@ -26,7 +26,7 @@
 
 const path = require('path');
 const prettier = require('prettier');
-const RollupPluginPrettier = require('../dist/rollup-plugin-prettier.js');
+const RollupPluginPrettier = require('../src/rollup-plugin-prettier.js');
 const verifyWarnLogsBecauseOfSourcemap = require('./utils/verify-warn-logs-because-of-source-map.js');
 const verifyWarnLogsNotTriggered = require('./utils/verify-warn-logs-not-triggered.js');
 const installWarnSpy = require('./utils/install-warn-spy.js');

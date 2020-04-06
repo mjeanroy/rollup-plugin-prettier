@@ -22,6 +22,12 @@
  * SOFTWARE.
  */
 
+require('@babel/register')({
+  ignore: [
+    /node_modules/,
+  ],
+});
+
 const gulp = require('gulp');
 const clean = require('./scripts/clean');
 const lint = require('./scripts/lint');
@@ -38,7 +44,7 @@ module.exports = {
   'clean': clean,
   'lint': lint,
   'build': gulp.series(prebuild, build),
-  'tdd': gulp.series(clean, build, test.tdd),
+  'tdd': gulp.series(pretest, test.tdd),
   'test': gulp.series(pretest, test.test),
   'release:patch': gulp.series(prerelease, release.patch),
   'release:minor': gulp.series(prerelease, release.minor),
