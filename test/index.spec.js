@@ -24,7 +24,7 @@
 
 import path from 'path';
 import prettier from 'prettier';
-import {rollupPluginPrettierStable} from '../src/index-rollup-stable.js';
+import rollupPluginPrettier from '../src/index.js';
 import {verifyWarnLogsBecauseOfSourcemap} from './utils/verify-warn-logs-because-of-source-map.js';
 import {verifyWarnLogsNotTriggered} from './utils/verify-warn-logs-not-triggered.js';
 import {installWarnSpy} from './utils/install-warn-spy.js';
@@ -35,12 +35,12 @@ describe('rollup-plugin-prettier [stable]', () => {
   });
 
   it('should have a name', () => {
-    const instance = rollupPluginPrettierStable();
+    const instance = rollupPluginPrettier();
     expect(instance.name).toBe('rollup-plugin-prettier');
   });
 
   it('should run prettier', () => {
-    const instance = rollupPluginPrettierStable({
+    const instance = rollupPluginPrettier({
       parser: 'babel',
     });
 
@@ -58,7 +58,7 @@ describe('rollup-plugin-prettier [stable]', () => {
   });
 
   it('should run prettier with sourcemap in output options', () => {
-    const instance = rollupPluginPrettierStable({
+    const instance = rollupPluginPrettier({
       parser: 'babel',
     });
 
@@ -76,7 +76,7 @@ describe('rollup-plugin-prettier [stable]', () => {
   });
 
   it('should run prettier with sourcemap (lowercase) in plugin options', () => {
-    const instance = rollupPluginPrettierStable({
+    const instance = rollupPluginPrettier({
       sourcemap: true,
       parser: 'babel',
     });
@@ -95,7 +95,7 @@ describe('rollup-plugin-prettier [stable]', () => {
   });
 
   it('should run prettier with sourcemap (camelcase) in plugin options', () => {
-    const instance = rollupPluginPrettierStable({
+    const instance = rollupPluginPrettier({
       sourceMap: true,
       parser: 'babel',
     });
@@ -114,7 +114,7 @@ describe('rollup-plugin-prettier [stable]', () => {
   });
 
   it('should run prettier with sourcemap disabled in output options', () => {
-    const instance = rollupPluginPrettierStable({
+    const instance = rollupPluginPrettier({
       parser: 'babel',
     });
 
@@ -137,7 +137,7 @@ describe('rollup-plugin-prettier [stable]', () => {
       singleQuote: true,
     };
 
-    const instance = rollupPluginPrettierStable(options);
+    const instance = rollupPluginPrettier(options);
     const code = 'var foo=0;var test="hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {sourcemap: false};
@@ -150,7 +150,7 @@ describe('rollup-plugin-prettier [stable]', () => {
   });
 
   it('should remove unnecessary spaces', () => {
-    const instance = rollupPluginPrettierStable({
+    const instance = rollupPluginPrettier({
       parser: 'babel',
     });
 
@@ -166,7 +166,7 @@ describe('rollup-plugin-prettier [stable]', () => {
   });
 
   it('should add and remove characters', () => {
-    const instance = rollupPluginPrettierStable({
+    const instance = rollupPluginPrettier({
       parser: 'babel',
     });
 
@@ -187,7 +187,7 @@ describe('rollup-plugin-prettier [stable]', () => {
       sourcemap: false,
     };
 
-    const instance = rollupPluginPrettierStable(options);
+    const instance = rollupPluginPrettier(options);
     const code = 'var foo = 0;';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
@@ -209,7 +209,7 @@ describe('rollup-plugin-prettier [stable]', () => {
     spyOn(prettier, 'format').and.callThrough();
 
     const code = 'var foo = 0;';
-    const instance = rollupPluginPrettierStable(options);
+    const instance = rollupPluginPrettier(options);
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
     instance.renderChunk(code, chunk, outputOptions);
@@ -234,7 +234,7 @@ describe('rollup-plugin-prettier [stable]', () => {
     spyOn(prettier, 'format').and.callThrough();
 
     const code = 'var foo = 0;';
-    const instance = rollupPluginPrettierStable(options);
+    const instance = rollupPluginPrettier(options);
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
     instance.renderChunk(code, chunk, outputOptions);
@@ -261,7 +261,7 @@ describe('rollup-plugin-prettier [stable]', () => {
 
     spyOn(prettier, 'format').and.callThrough();
 
-    const instance = rollupPluginPrettierStable(options);
+    const instance = rollupPluginPrettier(options);
     const code = 'var foo = 0;';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};

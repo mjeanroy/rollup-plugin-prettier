@@ -22,13 +22,34 @@
  * SOFTWARE.
  */
 
-import * as rollup from 'rollup';
-import {rollupPluginPrettierLegacy} from './index-rollup-legacy';
-import {rollupPluginPrettierStable} from './index-rollup-stable';
+import {RollupPluginPrettier} from './rollup-plugin-prettier.js';
 
-const VERSION = rollup.VERSION || '0';
-const MAJOR_VERSION = Number(VERSION.split('.')[0]) || 0;
-const IS_ROLLUP_LEGACY = MAJOR_VERSION === 0;
-const plugin = IS_ROLLUP_LEGACY ? rollupPluginPrettierLegacy : rollupPluginPrettierStable;
+/**
+ * Create rollup plugin compatible with rollup >= 1.0.0
+ *
+ * @param {Object} options Plugin options.
+ * @return {Object} Plugin instance.
+ */
+export default function rollupPluginPrettier(options) {
+  const plugin = new RollupPluginPrettier(options);
 
-export default plugin;
+  return {
+    /**
+     * Plugin name (used by rollup for error messages and warnings).
+     * @type {string}
+     */
+    name: plugin.name,
+
+    /**
+     * Function called by `rollup` before generating final bundle.
+     *
+     * @param {string} source Souce code of the final bundle.
+     * @param {Object} chunkInfo Chunk info.
+     * @param {Object} outputOptions Output option.
+     * @return {Object} The result containing a `code` property and, if a enabled, a `map` property.
+     */
+    renderChunk(source, chunkInfo, outputOptions) {
+      return plugin.reformat(source, outputOptions.sourcemap);
+    },
+  };
+}

@@ -27,7 +27,7 @@
     "prettier"
   ],
   "peerDependencies": {
-    "rollup": "<3"
+    "rollup": "^1.0.0 || ^2.0.0"
   },
   "dependencies": {
     "diff": "4.0.2",
