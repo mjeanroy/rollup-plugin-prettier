@@ -65,6 +65,9 @@ module.exports = {
 
 ## ChangeLogs
 
+- 2.0.0
+  - Support node >= 10 (still support node >= 6, but it not tested anymore).
+  - Update dev dependencies.
 - 1.0.0
   - **Breaking Change**: `prettier` dependency is now a peer dependency instead of a "direct" dependency: user of the plugin can choose to use prettier 1.x.x or prettier 2.x.x (note that this plugin should be compatible with all versions of prettier).
   - Support node >= 6.
