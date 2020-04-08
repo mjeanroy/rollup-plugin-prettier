@@ -57,7 +57,7 @@ module.exports = {
 
   plugins: [
     prettier({
-      sourceMap: true, // Can also be disabled/enabled here.
+      sourcemap: true, // Can also be disabled/enabled here.
     }),
   ],
 };
