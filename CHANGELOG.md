@@ -1,3 +1,15 @@
+## 1.0.0 (2020-04-08)
+
+* release: prepare next release ([43f81cf](https://github.com/mjeanroy/rollup-plugin-prettier/commit/43f81cf))
+* release: release version ([bc29103](https://github.com/mjeanroy/rollup-plugin-prettier/commit/bc29103))
+* docs: update changelog ([8ff81bc](https://github.com/mjeanroy/rollup-plugin-prettier/commit/8ff81bc))
+* chore: do not support rollup < 1.0.0 ([e0fe0d7](https://github.com/mjeanroy/rollup-plugin-prettier/commit/e0fe0d7))
+* chore: prettier is now a peer dependency instead of a direct dependency ([b0f7792](https://github.com/mjeanroy/rollup-plugin-prettier/commit/b0f7792))
+* chore: remove support for deprecate sourceMap option ([afed2db](https://github.com/mjeanroy/rollup-plugin-prettier/commit/afed2db))
+* chore: support node >= 6 ([26dd850](https://github.com/mjeanroy/rollup-plugin-prettier/commit/26dd850))
+
+
+
 ## 0.7.0 (2020-04-06)
 
 * release: prepare next release ([7014609](https://github.com/mjeanroy/rollup-plugin-prettier/commit/7014609))
