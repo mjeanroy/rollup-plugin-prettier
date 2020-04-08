@@ -10,7 +10,7 @@ Rollup plugin that can be used to run [prettier](http://npmjs.com/package/pretti
 
 Install the plugin with NPM:
 
-`npm install --save-dev rollup-plugin-prettier`
+`npm install --save-dev prettier rollup-plugin-prettier`
 
 Then add it to your rollup configuration:
 
@@ -65,6 +65,11 @@ module.exports = {
 
 ## ChangeLogs
 
+- 1.0.0
+  - **Breaking Change**: `prettier` dependency is now a peer dependency instead of a "direct" dependency: user of the plugin can choose to use prettier 1.x.x or prettier 2.x.x (note that this plugin should be compatible with all versions of prettier).
+  - Support node >= 6.
+  - Support rollup >= 1.0.0
+  - Remove support of deprecated option (`sourceMap` was deprecated in favor of `sourcemap`).
 - 0.7.0
   - Dependency updates.
   - Update rollup peer dependency version.
