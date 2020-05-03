@@ -43,6 +43,7 @@
     "@babel/parser": "7.9.6",
     "@babel/preset-env": "7.9.6",
     "@babel/register": "7.9.0",
+    "@rollup/plugin-babel": "5.0.0",
     "babel-plugin-add-module-exports": "1.0.2",
     "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
@@ -59,7 +60,6 @@
     "q": "1.5.1",
     "rimraf": "3.0.2",
     "rollup": "2.7.6",
-    "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-license": "2.0.0",
     "rollup-plugin-strip-banner": "2.0.0",
     "tmp": "0.2.1"
