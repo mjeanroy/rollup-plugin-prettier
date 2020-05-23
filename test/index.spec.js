@@ -75,6 +75,25 @@ describe('rollup-plugin-prettier', () => {
     );
   });
 
+  it('should run prettier with sourcemap in output options skipping warn message', () => {
+    const instance = rollupPluginPrettier({
+      sourcemap: 'silent',
+      parser: 'babel',
+    });
+
+    const code = 'var foo=0;var test="hello world";';
+    const chunk = {isEntry: false, imports: []};
+    const outputOptions = {sourcemap: true};
+    const result = instance.renderChunk(code, chunk, outputOptions);
+
+    verifyWarnLogsNotTriggered();
+    expect(result.map).toBeDefined();
+    expect(result.code).toBe(
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
+    );
+  });
+
   it('should run prettier with sourcemap (lowercase) in plugin options', () => {
     const instance = rollupPluginPrettier({
       sourcemap: true,
