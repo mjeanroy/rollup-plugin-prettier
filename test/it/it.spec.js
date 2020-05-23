@@ -30,6 +30,7 @@ import * as rollup from 'rollup';
 import * as babelParser from '@babel/parser';
 import prettier from '../../src/index.js';
 import {verifyWarnLogsBecauseOfSourcemap} from '../utils/verify-warn-logs-because-of-source-map.js';
+import {verifyWarnLogsNotTriggered} from '../utils/verify-warn-logs-not-triggered.js';
 
 describe('rollup-plugin-prettier', () => {
   let tmpDir;
@@ -158,6 +159,45 @@ describe('rollup-plugin-prettier', () => {
             const content = data.toString();
             expect(content).toContain('//# sourceMappingURL');
             verifyWarnLogsBecauseOfSourcemap();
+            done();
+          });
+        })
+        .catch((err) => {
+          done.fail(err);
+        });
+  });
+
+  it('should run prettier on final bundle with sourcemap set to "silent" in output option', (done) => {
+    const output = path.join(tmpDir.name, 'bundle.js');
+    const config = {
+      input: getBundlePath(),
+
+      output: {
+        file: output,
+        format: 'es',
+        sourcemap: 'inline',
+      },
+
+      plugins: [
+        prettier({
+          sourcemap: 'silent',
+          parser: 'babel',
+        }),
+      ],
+    };
+
+    rollup.rollup(config)
+        .then((bundle) => bundle.write(config.output))
+        .then(() => {
+          fs.readFile(output, 'utf8', (err, data) => {
+            if (err) {
+              done.fail(err);
+              return;
+            }
+
+            const content = data.toString();
+            expect(content).toContain('//# sourceMappingURL');
+            verifyWarnLogsNotTriggered();
             done();
           });
         })

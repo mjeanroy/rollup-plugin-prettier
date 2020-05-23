@@ -59,7 +59,7 @@ describe('RollupPluginPrettier', () => {
     );
   });
 
-  it('should run prettier with sourcemap (lowercase)', () => {
+  it('should run prettier with sourcemap', () => {
     const plugin = new RollupPluginPrettier({
       parser: 'babel',
       sourcemap: true,
@@ -71,6 +71,25 @@ describe('RollupPluginPrettier', () => {
     expect(plugin.getSourcemap()).toBe(true);
 
     verifyWarnLogsBecauseOfSourcemap();
+    expect(result.map).toBeDefined();
+    expect(result.code).toBe(
+        'var foo = 0;\n' +
+        'var test = "hello world";\n'
+    );
+  });
+
+  it('should run prettier with sourcemap skipping warn message', () => {
+    const plugin = new RollupPluginPrettier({
+      parser: 'babel',
+      sourcemap: 'silent',
+    });
+
+    const code = 'var foo=0;var test="hello world";';
+    const result = plugin.reformat(code);
+
+    expect(plugin.getSourcemap()).toBe('silent');
+
+    verifyWarnLogsNotTriggered();
     expect(result.map).toBeDefined();
     expect(result.code).toBe(
         'var foo = 0;\n' +
