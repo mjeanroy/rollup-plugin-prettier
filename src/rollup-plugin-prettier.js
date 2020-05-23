@@ -119,8 +119,10 @@ export class RollupPluginPrettier {
       return {code: output};
     }
 
-    console.warn(`[${this.name}] Sourcemap is enabled, computing diff is required`);
-    console.warn(`[${this.name}] This may take a moment (depends on the size of your bundle)`);
+    if (defaultSourcemap !== 'silent') {
+      console.warn(`[${this.name}] Sourcemap is enabled, computing diff is required`);
+      console.warn(`[${this.name}] This may take a moment (depends on the size of your bundle)`);
+    }
 
     const magicString = new MagicString(source);
     const changes = diff.diffChars(source, output);
