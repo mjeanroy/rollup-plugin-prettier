@@ -252,6 +252,7 @@ describe('rollup-plugin-prettier', () => {
       output: {
         file: output,
         format: 'es',
+        sourcemap: true,
       },
 
       plugins: [
