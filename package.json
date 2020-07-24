@@ -54,7 +54,7 @@
     "gulp-eslint": "6.0.0",
     "gulp-git": "2.10.1",
     "gulp-jasmine": "4.0.0",
-    "jasmine-core": "3.5.0",
+    "jasmine-core": "3.6.0",
     "lodash.startswith": "4.2.1",
     "prettier": "2.0.5",
     "q": "1.5.1",
