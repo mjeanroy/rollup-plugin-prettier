@@ -37,6 +37,7 @@ module.exports = {
     {
       format: 'cjs',
       file: path.join(config.dist, 'index.js'),
+      exports: 'default',
     },
   ],
 
