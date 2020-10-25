@@ -45,6 +45,7 @@ module.exports = {
 
     babel({
       envName: 'rollup',
+      babelHelpers: 'bundled',
     }),
 
     license({
