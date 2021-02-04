@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.12.13",
-    "@babel/parser": "7.12.11",
+    "@babel/parser": "7.12.14",
     "@babel/preset-env": "7.12.11",
     "@babel/register": "7.12.10",
     "@rollup/plugin-babel": "5.2.3",
