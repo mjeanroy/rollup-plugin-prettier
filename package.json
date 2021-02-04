@@ -43,7 +43,7 @@
     "@babel/parser": "7.12.11",
     "@babel/preset-env": "7.12.11",
     "@babel/register": "7.12.10",
-    "@rollup/plugin-babel": "5.2.2",
+    "@rollup/plugin-babel": "5.2.3",
     "babel-plugin-add-module-exports": "1.0.4",
     "eslint": "7.19.0",
     "eslint-config-google": "0.14.0",
