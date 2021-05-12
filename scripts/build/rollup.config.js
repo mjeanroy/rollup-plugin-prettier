@@ -22,6 +22,9 @@
  * SOFTWARE.
  */
 
+// Required with prettier >= 2.3.0 with node 11
+require('globalthis').shim();
+
 const path = require('path');
 const prettier = require('prettier');
 const stripBanner = require('rollup-plugin-strip-banner');
