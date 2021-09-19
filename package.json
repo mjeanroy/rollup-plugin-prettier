@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git@github.com:mjeanroy/rollup-plugin-prettier.git"
   },
-  "types": "./index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "clean": "gulp clean",
     "lint": "gulp lint",
