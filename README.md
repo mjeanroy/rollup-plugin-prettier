@@ -65,6 +65,12 @@ module.exports = {
 
 ## ChangeLogs
 
+- 2.2.0
+  - Add typings ([#696](https://github.com/mjeanroy/rollup-plugin-prettier/pull/696), thanks [@pastelmind](https://github.com/pastelmind)!)
+  - Dependency updates
+- 2.1.0
+  - Add option to not log warning due to heavy diff computation ([#435](https://github.com/mjeanroy/rollup-plugin-prettier/pull/435))
+  - Dependency updates
 - 2.0.0
   - Support node >= 10 (still support node >= 6, but it not tested anymore).
   - Update dev dependencies.
