@@ -26,8 +26,8 @@
  * @file Type definition for rollup-plugin-prettier
  */
 
-import type { Options as PrettierOptions } from "prettier";
-import type { Plugin } from "rollup";
+import type {Options as PrettierOptions} from 'prettier';
+import type {Plugin} from 'rollup';
 
 declare namespace prettier {
   interface Options extends PrettierOptions {

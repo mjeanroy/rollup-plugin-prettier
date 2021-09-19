@@ -35,12 +35,17 @@ module.exports = function lint() {
     return Promise.resolve();
   }
 
+  const sourcesOf = (ext) => ([
+    path.join(config.root, `*.${ext}`),
+    path.join(config.src, '**', `*.${ext}`),
+    path.join(config.test, '**', `*.${ext}`),
+    path.join(config.scripts, '**', `*.${ext}`),
+  ]);
+
   const eslint = require('gulp-eslint');
   const src = [
-    path.join(config.root, '*.js'),
-    path.join(config.src, '**', '*.js'),
-    path.join(config.test, '**', '*.js'),
-    path.join(config.scripts, '**', '*.js'),
+    ...sourcesOf('js'),
+    ...sourcesOf('ts'),
   ];
 
   log.debug('Linting files: ');
