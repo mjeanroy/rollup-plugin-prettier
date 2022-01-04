@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-prettier",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Run prettier formatter with rollup",
   "main": "dist/index.js",
   "author": "Mickael Jeanroy <mickael.jeanroy@gmail.com>",
