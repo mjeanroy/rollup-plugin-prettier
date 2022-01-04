@@ -44,7 +44,7 @@ declare namespace prettier {
      * Note: This may take some time because rollup-plugin-prettier diffs the
      * output to manually generate a sourcemap.
      */
-    sourcemap?: boolean;
+    sourcemap?: boolean | 'silent';
   }
 }
 
