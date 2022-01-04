@@ -26,6 +26,7 @@
 node_modules/
 
 # Do not send dev files
+/.idea
 /test
 /src
 /scripts
