@@ -65,6 +65,11 @@ module.exports = {
 
 ## ChangeLogs
 
+- 2.2.2
+  - Remove IDE files from published package
+- 2.2.1
+  - Fix typings
+  - Dependency updates
 - 2.2.0
   - Add typings ([#696](https://github.com/mjeanroy/rollup-plugin-prettier/pull/696), thanks [@pastelmind](https://github.com/pastelmind)!)
   - Dependency updates
