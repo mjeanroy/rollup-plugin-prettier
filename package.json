@@ -46,7 +46,7 @@
     "@babel/preset-env": "7.16.7",
     "@babel/register": "7.16.7",
     "@rollup/plugin-babel": "5.3.0",
-    "@typescript-eslint/eslint-plugin": "5.9.0",
+    "@typescript-eslint/eslint-plugin": "5.9.1",
     "@typescript-eslint/parser": "5.9.0",
     "babel-plugin-add-module-exports": "1.0.4",
     "eslint": "8.6.0",
