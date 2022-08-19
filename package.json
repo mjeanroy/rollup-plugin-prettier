@@ -65,7 +65,7 @@
     "prettier": "2.7.1",
     "q": "1.5.1",
     "rimraf": "3.0.2",
-    "rollup": "2.78.0",
+    "rollup": "2.78.1",
     "rollup-plugin-license": "2.8.1",
     "rollup-plugin-strip-banner": "2.0.0",
     "tmp": "0.2.1",
