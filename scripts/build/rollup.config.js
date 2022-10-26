@@ -26,10 +26,10 @@
 require('globalthis').shim();
 
 const path = require('path');
+const fs = require('fs');
 const prettier = require('prettier');
 const stripBanner = require('rollup-plugin-strip-banner');
 const babel = require('@rollup/plugin-babel').default;
-const license = require('rollup-plugin-license');
 const config = require('../config');
 const pkg = require('../../package.json');
 
@@ -41,6 +41,26 @@ module.exports = {
       format: 'cjs',
       file: path.join(config.dist, 'index.js'),
       exports: 'default',
+      banner() {
+        const rawBanner = fs.readFileSync(
+            path.join(config.root, 'LICENSE')
+        );
+
+        const commentedBanner = rawBanner.toString()
+            .trim()
+            .split('\n')
+            .map((line) => ` * ${line}`)
+            .map((line) => line.trim());
+
+        const blockComment = [
+          '/**',
+          ...commentedBanner,
+          ' */',
+          '',
+        ];
+
+        return blockComment.join('\n');
+      },
     },
   ],
 
@@ -50,14 +70,6 @@ module.exports = {
     babel({
       envName: 'rollup',
       babelHelpers: 'bundled',
-    }),
-
-    license({
-      banner: {
-        content: {
-          file: path.join(config.root, 'LICENSE'),
-        },
-      },
     }),
 
     {
