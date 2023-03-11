@@ -64,7 +64,7 @@
     "lodash.startswith": "4.2.1",
     "prettier": "2.8.4",
     "q": "1.5.1",
-    "rimraf": "3.0.2",
+    "rimraf": "4.4.0",
     "rollup": "3.19.1",
     "rollup-plugin-strip-banner": "3.0.0",
     "tmp": "0.2.1",
