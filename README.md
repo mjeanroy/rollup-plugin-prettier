@@ -65,6 +65,10 @@ module.exports = {
 
 ## ChangeLogs
 
+- 3.1.0
+  - Reformat asynchrnously to prepare support for prettier ^3.0.0
+- 3.0.0
+  - Support rollup ^3.0.0
 - 2.2.2
   - Remove IDE files from published package
 - 2.2.1
