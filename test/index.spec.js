@@ -47,14 +47,14 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo=0;var test="hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    expect(console.warn).not.toHaveBeenCalled();
-    expect(result.map).not.toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      expect(console.warn).not.toHaveBeenCalled();
+      expect(result.map).not.toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with sourcemap in output options', () => {
@@ -65,14 +65,14 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo=0;var test="hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {sourcemap: true};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    verifyWarnLogsBecauseOfSourcemap();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      verifyWarnLogsBecauseOfSourcemap();
+      expect(result.map).toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with sourcemap in output options skipping warn message', () => {
@@ -84,14 +84,14 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo=0;var test="hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {sourcemap: true};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    verifyWarnLogsNotTriggered();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      verifyWarnLogsNotTriggered();
+      expect(result.map).toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with sourcemap (lowercase) in plugin options', () => {
@@ -103,14 +103,14 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo=0;var test="hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    verifyWarnLogsBecauseOfSourcemap();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      verifyWarnLogsBecauseOfSourcemap();
+      expect(result.map).toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with sourcemap disabled in output options', () => {
@@ -121,14 +121,14 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo=0;var test="hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {sourcemap: false};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    verifyWarnLogsNotTriggered();
-    expect(result.map).not.toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      verifyWarnLogsNotTriggered();
+      expect(result.map).not.toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with options', () => {
@@ -141,12 +141,12 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo=0;var test="hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {sourcemap: false};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    expect(result.code).toBe(
-        `var foo = 0;\n` +
-        `var test = 'hello world';\n`
-    );
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      expect(result.code).toBe(
+          `var foo = 0;\n` +
+          `var test = 'hello world';\n`
+      );
+    });
   });
 
   it('should remove unnecessary spaces', () => {
@@ -157,12 +157,12 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo    =    0;\nvar test = "hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {sourcemap: false};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should add and remove characters', () => {
@@ -173,12 +173,12 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo    =    0;var test = "hello world";';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {sourcemap: false};
-    const result = instance.renderChunk(code, chunk, outputOptions);
-
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should avoid side effect and do not modify plugin options', () => {
@@ -191,12 +191,12 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo = 0;';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
-    instance.renderChunk(code, chunk, outputOptions);
-
-    // It should not have been touched.
-    expect(options).toEqual({
-      parser: 'babel',
-      sourcemap: false,
+    return instance.renderChunk(code, chunk, outputOptions).then(() => {
+      // It should not have been touched.
+      expect(options).toEqual({
+        parser: 'babel',
+        sourcemap: false,
+      });
     });
   });
 
@@ -212,15 +212,15 @@ describe('rollup-plugin-prettier', () => {
     const instance = rollupPluginPrettier(options);
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
-    instance.renderChunk(code, chunk, outputOptions);
+    return instance.renderChunk(code, chunk, outputOptions).then(() => {
+      expect(prettier.format).toHaveBeenCalledWith(code, {
+        parser: 'babel',
+      });
 
-    expect(prettier.format).toHaveBeenCalledWith(code, {
-      parser: 'babel',
-    });
-
-    expect(options).toEqual({
-      parser: 'babel',
-      sourcemap: false,
+      expect(options).toEqual({
+        parser: 'babel',
+        sourcemap: false,
+      });
     });
   });
 
@@ -237,17 +237,17 @@ describe('rollup-plugin-prettier', () => {
     const instance = rollupPluginPrettier(options);
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
-    instance.renderChunk(code, chunk, outputOptions);
+    return instance.renderChunk(code, chunk, outputOptions).then(() => {
+      expect(prettier.format).toHaveBeenCalledWith(code, {
+        parser: 'babel',
+        singleQuote: true,
+      });
 
-    expect(prettier.format).toHaveBeenCalledWith(code, {
-      parser: 'babel',
-      singleQuote: true,
-    });
-
-    expect(options).toEqual({
-      parser: 'babel',
-      sourcemap: false,
-      singleQuote: true,
+      expect(options).toEqual({
+        parser: 'babel',
+        sourcemap: false,
+        singleQuote: true,
+      });
     });
   });
 
@@ -265,17 +265,17 @@ describe('rollup-plugin-prettier', () => {
     const code = 'var foo = 0;';
     const chunk = {isEntry: false, imports: []};
     const outputOptions = {};
-    instance.renderChunk(code, chunk, outputOptions);
+    return instance.renderChunk(code, chunk, outputOptions).then(() => {
+      expect(options).toEqual({
+        parser,
+        cwd,
+      });
 
-    expect(options).toEqual({
-      parser,
-      cwd,
-    });
-
-    expect(prettier.format).toHaveBeenCalledWith(code, {
-      parser,
-      singleQuote: true,
-      tabWidth: 2,
+      expect(prettier.format).toHaveBeenCalledWith(code, {
+        parser,
+        singleQuote: true,
+        tabWidth: 2,
+      });
     });
   });
 });
