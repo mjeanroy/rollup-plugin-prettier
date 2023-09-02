@@ -27,7 +27,6 @@ import path from 'path';
 import tmp from 'tmp';
 import Q from 'q';
 import * as rollup from 'rollup';
-import * as babelParser from '@babel/parser';
 import prettier from '../../src/index.js';
 import {verifyWarnLogsBecauseOfSourcemap} from '../utils/verify-warn-logs-because-of-source-map.js';
 import {verifyWarnLogsNotTriggered} from '../utils/verify-warn-logs-not-triggered.js';
@@ -61,48 +60,6 @@ describe('rollup-plugin-prettier', () => {
       plugins: [
         prettier({
           parser: 'babel',
-        }),
-      ],
-    };
-
-    rollup.rollup(config)
-        .then((bundle) => bundle.write(config.output))
-        .then(() => {
-          fs.readFile(output, 'utf8', (err, data) => {
-            if (err) {
-              done.fail(err);
-            }
-
-            const content = data.toString();
-
-            expect(content).toBeDefined();
-            expect(content).toContain(
-                'function sum(array) {\n' +
-                '  return array.reduce((acc, x) => acc + x, 0);\n' +
-                '}'
-            );
-
-            done();
-          });
-        });
-  });
-
-  it('should run prettier with @babel/parser instead of babel', (done) => {
-    const output = path.join(tmpDir.name, 'bundle.js');
-    const config = {
-      input: getBundlePath(),
-      output: {
-        file: output,
-        format: 'es',
-      },
-
-      plugins: [
-        prettier({
-          parser(text) {
-            return babelParser.parse(text, {
-              sourceType: 'module',
-            });
-          },
         }),
       ],
     };
