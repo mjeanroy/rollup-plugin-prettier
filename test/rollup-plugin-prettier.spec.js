@@ -43,20 +43,20 @@ describe('RollupPluginPrettier', () => {
     expect(plugin.getSourcemap()).toBeNull();
   });
 
-  it('should run esformatter without sourcemap by default', () => {
+  it('should run plugin without sourcemap by default', () => {
     const plugin = new RollupPluginPrettier({
       parser: 'babel',
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const result = plugin.reformat(code);
-
-    verifyWarnLogsNotTriggered();
-    expect(result.map).not.toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+    return plugin.reformat(code).then((result) => {
+      verifyWarnLogsNotTriggered();
+      expect(result.map).not.toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with sourcemap', () => {
@@ -66,16 +66,16 @@ describe('RollupPluginPrettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const result = plugin.reformat(code);
+    return plugin.reformat(code).then((result) => {
+      expect(plugin.getSourcemap()).toBe(true);
 
-    expect(plugin.getSourcemap()).toBe(true);
-
-    verifyWarnLogsBecauseOfSourcemap();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+      verifyWarnLogsBecauseOfSourcemap();
+      expect(result.map).toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with sourcemap skipping warn message', () => {
@@ -85,16 +85,16 @@ describe('RollupPluginPrettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const result = plugin.reformat(code);
+    return plugin.reformat(code).then((result) => {
+      expect(plugin.getSourcemap()).toBe('silent');
 
-    expect(plugin.getSourcemap()).toBe('silent');
-
-    verifyWarnLogsNotTriggered();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+      verifyWarnLogsNotTriggered();
+      expect(result.map).toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with sourcemap if it has been enabled', () => {
@@ -108,16 +108,16 @@ describe('RollupPluginPrettier', () => {
     plugin.enableSourcemap();
 
     const code = 'var foo=0;var test="hello world";';
-    const result = plugin.reformat(code);
+    return plugin.reformat(code).then((result) => {
+      expect(plugin.getSourcemap()).toBe(true);
 
-    expect(plugin.getSourcemap()).toBe(true);
-
-    verifyWarnLogsBecauseOfSourcemap();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+      verifyWarnLogsBecauseOfSourcemap();
+      expect(result.map).toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier with sourcemap enable in reformat', () => {
@@ -127,16 +127,16 @@ describe('RollupPluginPrettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const result = plugin.reformat(code, true);
+    return plugin.reformat(code, true).then((result) => {
+      expect(plugin.getSourcemap()).toBe(false);
 
-    expect(plugin.getSourcemap()).toBe(false);
-
-    verifyWarnLogsBecauseOfSourcemap();
-    expect(result.map).toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+      verifyWarnLogsBecauseOfSourcemap();
+      expect(result.map).toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier without sourcemap enable in reformat', () => {
@@ -146,16 +146,16 @@ describe('RollupPluginPrettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const result = plugin.reformat(code, false);
+    return plugin.reformat(code, false).then((result) => {
+      expect(plugin.getSourcemap()).toBe(true);
 
-    expect(plugin.getSourcemap()).toBe(true);
-
-    verifyWarnLogsNotTriggered();
-    expect(result.map).not.toBeDefined();
-    expect(result.code).toBe(
-        'var foo = 0;\n' +
-        'var test = "hello world";\n'
-    );
+      verifyWarnLogsNotTriggered();
+      expect(result.map).not.toBeDefined();
+      expect(result.code).toBe(
+          'var foo = 0;\n' +
+          'var test = "hello world";\n'
+      );
+    });
   });
 
   it('should run prettier using config file from given current working directory', () => {
@@ -171,19 +171,19 @@ describe('RollupPluginPrettier', () => {
     spyOn(prettier, 'format').and.callThrough();
 
     const code = 'var foo = 0;';
-    const result = plugin.reformat(code);
+    return plugin.reformat(code).then((result) => {
+      expect(result.code).toBe('var foo = 0;\n');
 
-    expect(result.code).toBe('var foo = 0;\n');
+      expect(options).toEqual({
+        parser,
+        cwd,
+      });
 
-    expect(options).toEqual({
-      parser,
-      cwd,
-    });
-
-    expect(prettier.format).toHaveBeenCalledWith(code, {
-      parser,
-      singleQuote: true,
-      tabWidth: 2,
+      expect(prettier.format).toHaveBeenCalledWith(code, {
+        parser,
+        singleQuote: true,
+        tabWidth: 2,
+      });
     });
   });
 });

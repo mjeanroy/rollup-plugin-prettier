@@ -46,7 +46,7 @@ export default function rollupPluginPrettier(options) {
      * @param {string} source Souce code of the final bundle.
      * @param {Object} chunkInfo Chunk info.
      * @param {Object} outputOptions Output option.
-     * @return {Object} The result containing a `code` property and, if a enabled, a `map` property.
+     * @return {Promise<Object>} The result containing a `code` property and, if a enabled, a `map` property.
      */
     renderChunk(source, chunkInfo, outputOptions) {
       return plugin.reformat(source, outputOptions.sourcemap);

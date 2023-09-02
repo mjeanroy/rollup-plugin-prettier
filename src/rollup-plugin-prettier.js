@@ -40,6 +40,26 @@ const OPTIONS = new Set([
 ]);
 
 /**
+ * Resolve prettier config, using `resolveConfig` by default, switch to `resolveConfigSync` otherwise.
+ * If none of these methods are available, returns `null` as a fallback.
+ *
+ * @param {string} cwd The current working directory.
+ * @returns {Promise<object | null>} A promise resolved with prettier configuration, or null.
+ */
+function resolvePrettierConfig(cwd) {
+  // Be careful, `resolveConfig` function does not exist on old version of prettier.
+  if (prettier.resolveConfig) {
+    return prettier.resolveConfig(cwd);
+  }
+
+  if (prettier.resolveConfigSync) {
+    return Promise.resolve(prettier.resolveConfigSync(cwd));
+  }
+
+  return Promise.resolve(null);
+}
+
+/**
  * The plugin.
  *
  * @class
@@ -55,31 +75,24 @@ export class RollupPluginPrettier {
     this.name = 'rollup-plugin-prettier';
 
     // Initialize main options.
-    this._options = omitBy((options), (value, key) => (
-      OPTIONS.has(key)
-    ));
+    this._options = Promise.resolve(
+        omitBy((options), (value, key) => OPTIONS.has(key))
+    );
 
-    // Try to resolve config file it it exists
-    // Be careful, `resolveConfig` function does not exist on old version of prettier.
-    if (prettier.resolveConfig) {
-      const cwd = hasIn(options, 'cwd') ? options.cwd : process.cwd();
-      const configOptions = prettier.resolveConfig.sync(cwd);
-      if (configOptions != null) {
-        this._options = Object.assign(configOptions, this._options || {});
-      }
-    }
+    // Try to resolve config file if it exists
+    const cwd = hasIn(options, 'cwd') ? options.cwd : process.cwd();
+    this._options = Promise.all([resolvePrettierConfig(cwd), this._options])
+        .then((results) => (
+          Object.assign({}, ...results.map((result) => result || {}))
+        ));
 
     // Reset empty options.
-    if (isEmpty(this._options)) {
-      this._options = undefined;
-    }
+    this._options = this._options.then((options) => (
+      isEmpty(options) ? undefined : options
+    ));
 
     // Check if sourcemap is enabled by default.
-    if (hasIn(options, 'sourcemap')) {
-      this._sourcemap = options.sourcemap;
-    } else {
-      this._sourcemap = null;
-    }
+    this._sourcemap = hasIn(options, 'sourcemap') ? options.sourcemap : null;
   }
 
   /**
@@ -105,10 +118,25 @@ export class RollupPluginPrettier {
    *
    * @param {string} source The source code to reformat.
    * @param {boolean} sourcemap If sourcemap should be generated or not.
-   * @return {Object} The transformation result.
+   * @return {Promise<{code: string, map: object}|{code: string}>} The transformation result.
    */
   reformat(source, sourcemap) {
-    const output = prettier.format(source, this._options);
+    return this._options.then((options) => (
+      this._reformat(source, sourcemap, options)
+    ));
+  }
+
+  /**
+   * Reformat source code using prettier.
+   *
+   * @param {string} source The source code to reformat.
+   * @param {boolean} sourcemap If sourcemap should be generated or not.
+   * @param {object} options Prettier options.
+   * @returns {{code: string, map: object}|{code: string}} The reformat response.
+   * @private
+   */
+  _reformat(source, sourcemap, options) {
+    const output = prettier.format(source, options);
 
     // Should we generate sourcemap?
     // The sourcemap option may be a boolean or any truthy value (such as a `string`).
