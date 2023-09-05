@@ -23,7 +23,6 @@
  */
 
 const path = require('path');
-const gulp = require('gulp');
 const config = require('../config');
 const log = require('../log');
 
@@ -42,20 +41,30 @@ module.exports = function lint() {
     path.join(config.scripts, '**', `*.${ext}`),
   ]);
 
-  const eslint = require('gulp-eslint');
-  const src = [
+  const inputs = [
     ...sourcesOf('js'),
     ...sourcesOf('ts'),
   ];
 
   log.debug('Linting files: ');
 
-  src.forEach((f) => {
+  inputs.forEach((f) => {
     log.debug(`  ${f}`);
   });
 
-  return gulp.src(src)
-      .pipe(eslint())
-      .pipe(eslint.format())
-      .pipe(eslint.failAfterError());
+  const {ESLint} = require('eslint');
+  const fancyLog = require('fancy-log');
+  const eslint = new ESLint({
+    errorOnUnmatchedPattern: false,
+  });
+
+  const lintFiles = eslint.lintFiles(inputs);
+  const loadFormatter = eslint.loadFormatter('stylish');
+
+  return Promise.all([lintFiles, loadFormatter]).then(([results, formatter]) => {
+    if (results.errorCount > 0 || results.warningCount > 0) {
+      fancyLog(formatter.format(results));
+      throw new Error('ESLintError');
+    }
+  });
 };
