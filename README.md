@@ -65,6 +65,9 @@ module.exports = {
 
 ## ChangeLogs
 
+- 4.1.0
+  - Support rollup ^4.0.0
+  - Dependency upgrades
 - 4.0.0
   - Support prettier ^3.0.0
   - Dependency upgrades
