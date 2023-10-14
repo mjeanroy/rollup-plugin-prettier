@@ -65,6 +65,9 @@ module.exports = {
 
 ## ChangeLogs
 
+- 4.0.0
+  - Support prettier ^3.0.0
+  - Dependency upgrades
 - 3.1.0
   - Reformat asynchrnously to prepare support for prettier ^3.0.0
 - 3.0.0
