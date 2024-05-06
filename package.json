@@ -54,7 +54,7 @@
     "fancy-log": "2.0.0",
     "globalthis": "1.0.4",
     "gulp": "5.0.0",
-    "gulp-conventional-changelog": "4.0.0",
+    "gulp-conventional-changelog": "5.0.0",
     "gulp-jasmine": "4.0.0",
     "jasmine": "3.99.0",
     "jasmine-core": "3.10.1",
