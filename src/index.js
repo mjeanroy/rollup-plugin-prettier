@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {RollupPluginPrettier} from './rollup-plugin-prettier.js';
+import { RollupPluginPrettier } from './rollup-plugin-prettier';
 
 /**
  * Create rollup plugin compatible with rollup >= 1.0.0

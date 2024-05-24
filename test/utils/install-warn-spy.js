@@ -30,7 +30,7 @@ import startsWith from 'lodash.startswith';
  * @return {void}
  */
 export function installWarnSpy() {
-  const warn = console.warn;
+  const { warn } = console;
 
   spyOn(console, 'warn').and.callFake((msg, ...args) => {
     if (!startsWith(msg, '[rollup-plugin-prettier]')) {

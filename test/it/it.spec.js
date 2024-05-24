@@ -27,9 +27,10 @@ import path from 'path';
 import tmp from 'tmp';
 import Q from 'q';
 import * as rollup from 'rollup';
-import prettier from '../../src/index.js';
-import {verifyWarnLogsBecauseOfSourcemap} from '../utils/verify-warn-logs-because-of-source-map.js';
-import {verifyWarnLogsNotTriggered} from '../utils/verify-warn-logs-not-triggered.js';
+import prettier from '../../src/index';
+import { verifyWarnLogsBecauseOfSourcemap } from '../utils/verify-warn-logs-because-of-source-map';
+import { verifyWarnLogsNotTriggered } from '../utils/verify-warn-logs-not-triggered';
+import { joinLines } from '../utils/join-lines';
 
 describe('rollup-plugin-prettier', () => {
   let tmpDir;
@@ -65,25 +66,27 @@ describe('rollup-plugin-prettier', () => {
     };
 
     rollup.rollup(config)
-        .then((bundle) => bundle.write(config.output))
-        .then(() => {
-          fs.readFile(output, 'utf8', (err, data) => {
-            if (err) {
-              done.fail(err);
-            }
+      .then((bundle) => bundle.write(config.output))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+          }
 
-            const content = data.toString();
+          const content = data.toString();
 
-            expect(content).toBeDefined();
-            expect(content).toContain(
-                'function sum(array) {\n' +
-                '  return array.reduce((acc, x) => acc + x, 0);\n' +
-                '}'
-            );
+          expect(content).toBeDefined();
+          expect(content).toContain(
+            joinLines([
+              'function sum(array) {',
+              '  return array.reduce((acc, x) => acc + x, 0);',
+              '}',
+            ]),
+          );
 
-            done();
-          });
+          done();
         });
+      });
   });
 
   it('should run prettier on final bundle with sourcemap set in output option', (done) => {
@@ -105,23 +108,23 @@ describe('rollup-plugin-prettier', () => {
     };
 
     rollup.rollup(config)
-        .then((bundle) => bundle.write(config.output))
-        .then(() => {
-          fs.readFile(output, 'utf8', (err, data) => {
-            if (err) {
-              done.fail(err);
-              return;
-            }
+      .then((bundle) => bundle.write(config.output))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+            return;
+          }
 
-            const content = data.toString();
-            expect(content).toContain('//# sourceMappingURL');
-            verifyWarnLogsBecauseOfSourcemap();
-            done();
-          });
-        })
-        .catch((err) => {
-          done.fail(err);
+          const content = data.toString();
+          expect(content).toContain('//# sourceMappingURL');
+          verifyWarnLogsBecauseOfSourcemap();
+          done();
         });
+      })
+      .catch((err) => {
+        done.fail(err);
+      });
   });
 
   it('should run prettier on final bundle with sourcemap set to "silent" in output option', (done) => {
@@ -144,23 +147,23 @@ describe('rollup-plugin-prettier', () => {
     };
 
     rollup.rollup(config)
-        .then((bundle) => bundle.write(config.output))
-        .then(() => {
-          fs.readFile(output, 'utf8', (err, data) => {
-            if (err) {
-              done.fail(err);
-              return;
-            }
+      .then((bundle) => bundle.write(config.output))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+            return;
+          }
 
-            const content = data.toString();
-            expect(content).toContain('//# sourceMappingURL');
-            verifyWarnLogsNotTriggered();
-            done();
-          });
-        })
-        .catch((err) => {
-          done.fail(err);
+          const content = data.toString();
+          expect(content).toContain('//# sourceMappingURL');
+          verifyWarnLogsNotTriggered();
+          done();
         });
+      })
+      .catch((err) => {
+        done.fail(err);
+      });
   });
 
   it('should run prettier on final bundle with sourcemap set in output array option', (done) => {
@@ -169,7 +172,7 @@ describe('rollup-plugin-prettier', () => {
       input: getBundlePath(),
 
       output: [
-        {file: output, format: 'es', sourcemap: 'inline'},
+        { file: output, format: 'es', sourcemap: 'inline' },
       ],
 
       plugins: [
@@ -180,25 +183,25 @@ describe('rollup-plugin-prettier', () => {
     };
 
     rollup.rollup(config)
-        .then((bundle) => (
-          Q.all(config.output.map((out) => bundle.write(out)))
-        ))
-        .then(() => {
-          fs.readFile(output, 'utf8', (err, data) => {
-            if (err) {
-              done.fail(err);
-              return;
-            }
+      .then((bundle) => (
+        Q.all(config.output.map((out) => bundle.write(out)))
+      ))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err, data) => {
+          if (err) {
+            done.fail(err);
+            return;
+          }
 
-            const content = data.toString();
-            expect(content).toContain('//# sourceMappingURL');
-            verifyWarnLogsBecauseOfSourcemap();
-            done();
-          });
-        })
-        .catch((err) => {
-          done.fail(err);
+          const content = data.toString();
+          expect(content).toContain('//# sourceMappingURL');
+          verifyWarnLogsBecauseOfSourcemap();
+          done();
         });
+      })
+      .catch((err) => {
+        done.fail(err);
+      });
   });
 
   it('should enable sourcemap (lowercase) on plugin', (done) => {
@@ -221,21 +224,21 @@ describe('rollup-plugin-prettier', () => {
     };
 
     rollup.rollup(config)
-        .then((bundle) => bundle.write(config.output))
-        .then(() => {
-          fs.readFile(output, 'utf8', (err, data) => {
-            if (err) {
-              done.fail(err);
-              return;
-            }
+      .then((bundle) => bundle.write(config.output))
+      .then(() => {
+        fs.readFile(output, 'utf8', (err) => {
+          if (err) {
+            done.fail(err);
+            return;
+          }
 
-            verifyWarnLogsBecauseOfSourcemap();
-            done();
-          });
-        })
-        .catch((err) => {
-          done.fail(err);
+          verifyWarnLogsBecauseOfSourcemap();
+          done();
         });
+      })
+      .catch((err) => {
+        done.fail(err);
+      });
   });
 
   /**

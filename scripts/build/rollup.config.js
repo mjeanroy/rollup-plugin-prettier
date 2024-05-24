@@ -43,14 +43,14 @@ module.exports = {
       exports: 'default',
       banner() {
         const rawBanner = fs.readFileSync(
-            path.join(config.root, 'LICENSE')
+          path.join(config.root, 'LICENSE'),
         );
 
         const commentedBanner = rawBanner.toString()
-            .trim()
-            .split('\n')
-            .map((line) => ` * ${line}`)
-            .map((line) => line.trim());
+          .trim()
+          .split('\n')
+          .map((line) => ` * ${line}`)
+          .map((line) => line.trim());
 
         const blockComment = [
           '/**',

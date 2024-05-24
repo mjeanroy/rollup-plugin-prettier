@@ -24,10 +24,11 @@
 
 import path from 'path';
 import prettier from 'prettier';
-import rollupPluginPrettier from '../src/index.js';
-import {verifyWarnLogsBecauseOfSourcemap} from './utils/verify-warn-logs-because-of-source-map.js';
-import {verifyWarnLogsNotTriggered} from './utils/verify-warn-logs-not-triggered.js';
-import {installWarnSpy} from './utils/install-warn-spy.js';
+import rollupPluginPrettier from '../src/index';
+import { verifyWarnLogsBecauseOfSourcemap } from './utils/verify-warn-logs-because-of-source-map';
+import { verifyWarnLogsNotTriggered } from './utils/verify-warn-logs-not-triggered';
+import { installWarnSpy } from './utils/install-warn-spy';
+import { joinLines } from './utils/join-lines';
 
 describe('rollup-plugin-prettier', () => {
   beforeEach(() => {
@@ -45,14 +46,17 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const chunk = {isEntry: false, imports: []};
+    const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
     return instance.renderChunk(code, chunk, outputOptions).then((result) => {
       expect(console.warn).not.toHaveBeenCalled();
       expect(result.map).not.toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -63,14 +67,17 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const chunk = {isEntry: false, imports: []};
-    const outputOptions = {sourcemap: true};
+    const chunk = { isEntry: false, imports: [] };
+    const outputOptions = { sourcemap: true };
     return instance.renderChunk(code, chunk, outputOptions).then((result) => {
       verifyWarnLogsBecauseOfSourcemap();
       expect(result.map).toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -82,14 +89,17 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const chunk = {isEntry: false, imports: []};
-    const outputOptions = {sourcemap: true};
+    const chunk = { isEntry: false, imports: [] };
+    const outputOptions = { sourcemap: true };
     return instance.renderChunk(code, chunk, outputOptions).then((result) => {
       verifyWarnLogsNotTriggered();
       expect(result.map).toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -101,14 +111,17 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const chunk = {isEntry: false, imports: []};
+    const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
     return instance.renderChunk(code, chunk, outputOptions).then((result) => {
       verifyWarnLogsBecauseOfSourcemap();
       expect(result.map).toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -119,14 +132,17 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    const chunk = {isEntry: false, imports: []};
-    const outputOptions = {sourcemap: false};
+    const chunk = { isEntry: false, imports: [] };
+    const outputOptions = { sourcemap: false };
     return instance.renderChunk(code, chunk, outputOptions).then((result) => {
       verifyWarnLogsNotTriggered();
       expect(result.map).not.toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -139,12 +155,15 @@ describe('rollup-plugin-prettier', () => {
 
     const instance = rollupPluginPrettier(options);
     const code = 'var foo=0;var test="hello world";';
-    const chunk = {isEntry: false, imports: []};
-    const outputOptions = {sourcemap: false};
+    const chunk = { isEntry: false, imports: [] };
+    const outputOptions = { sourcemap: false };
     return instance.renderChunk(code, chunk, outputOptions).then((result) => {
       expect(result.code).toBe(
-          `var foo = 0;\n` +
-          `var test = 'hello world';\n`
+        joinLines([
+          'var foo = 0;',
+          "var test = 'hello world';",
+          '',
+        ]),
       );
     });
   });
@@ -155,12 +174,15 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo    =    0;\nvar test = "hello world";';
-    const chunk = {isEntry: false, imports: []};
-    const outputOptions = {sourcemap: false};
+    const chunk = { isEntry: false, imports: [] };
+    const outputOptions = { sourcemap: false };
     return instance.renderChunk(code, chunk, outputOptions).then((result) => {
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -171,12 +193,15 @@ describe('rollup-plugin-prettier', () => {
     });
 
     const code = 'var foo    =    0;var test = "hello world";';
-    const chunk = {isEntry: false, imports: []};
-    const outputOptions = {sourcemap: false};
+    const chunk = { isEntry: false, imports: [] };
+    const outputOptions = { sourcemap: false };
     return instance.renderChunk(code, chunk, outputOptions).then((result) => {
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -189,7 +214,7 @@ describe('rollup-plugin-prettier', () => {
 
     const instance = rollupPluginPrettier(options);
     const code = 'var foo = 0;';
-    const chunk = {isEntry: false, imports: []};
+    const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
     return instance.renderChunk(code, chunk, outputOptions).then(() => {
       // It should not have been touched.
@@ -210,7 +235,7 @@ describe('rollup-plugin-prettier', () => {
 
     const code = 'var foo = 0;';
     const instance = rollupPluginPrettier(options);
-    const chunk = {isEntry: false, imports: []};
+    const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
     return instance.renderChunk(code, chunk, outputOptions).then(() => {
       expect(prettier.format).toHaveBeenCalledWith(code, {
@@ -235,7 +260,7 @@ describe('rollup-plugin-prettier', () => {
 
     const code = 'var foo = 0;';
     const instance = rollupPluginPrettier(options);
-    const chunk = {isEntry: false, imports: []};
+    const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
     return instance.renderChunk(code, chunk, outputOptions).then(() => {
       expect(prettier.format).toHaveBeenCalledWith(code, {
@@ -263,7 +288,7 @@ describe('rollup-plugin-prettier', () => {
 
     const instance = rollupPluginPrettier(options);
     const code = 'var foo = 0;';
-    const chunk = {isEntry: false, imports: []};
+    const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
     return instance.renderChunk(code, chunk, outputOptions).then(() => {
       expect(options).toEqual({

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 @pastelmind <https://github.com/pastelmind>
+ * Copyright (c) 2017-2023 Mickael Jeanroy
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,12 @@
  */
 
 /**
- * @file Type definition for rollup-plugin-prettier
+ * Join given lines into a single line.
+ *
+ * @param {Array<string>} lines The lines to join.
+ * @param {string} separator The separator, defaults to End Of Line character.
+ * @return {string} The full text.
  */
-
-import type { Options as PrettierOptions } from 'prettier';
-import type { Plugin } from 'rollup';
-
-declare namespace prettier {
-  interface Options extends PrettierOptions {
-    /**
-     * Directory to look for a Prettier config file.
-     *
-     * If omitted, defaults to `process.cwd()`.
-     */
-    cwd?: string;
-
-    /**
-     * Whether to generate a sourcemap.
-     *
-     * Note: This may take some time because rollup-plugin-prettier diffs the
-     * output to manually generate a sourcemap.
-     */
-    sourcemap?: boolean | 'silent';
-  }
+export function joinLines(lines, separator = '\n') {
+  return lines.join(separator);
 }
-
-declare function prettier(options?: prettier.Options): Plugin;
-
-export = prettier;

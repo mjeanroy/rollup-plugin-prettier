@@ -76,19 +76,19 @@ export class RollupPluginPrettier {
 
     // Initialize main options.
     this._options = Promise.resolve(
-        omitBy((options), (value, key) => OPTIONS.has(key))
+      omitBy((options), (value, key) => OPTIONS.has(key)),
     );
 
     // Try to resolve config file if it exists
     const cwd = hasIn(options, 'cwd') ? options.cwd : process.cwd();
     this._options = Promise.all([resolvePrettierConfig(cwd), this._options])
-        .then((results) => (
-          Object.assign({}, ...results.map((result) => result || {}))
-        ));
+      .then((results) => (
+        Object.assign({}, ...results.map((result) => result || {}))
+      ));
 
     // Reset empty options.
-    this._options = this._options.then((options) => (
-      isEmpty(options) ? undefined : options
+    this._options = this._options.then((opts) => (
+      isEmpty(opts) ? undefined : opts
     ));
 
     // Check if sourcemap is enabled by default.
@@ -159,7 +159,7 @@ export class RollupPluginPrettier {
     const defaultSourcemap = isNil(this._sourcemap) ? false : this._sourcemap;
     const outputSourcemap = isNil(sourcemap) ? defaultSourcemap : sourcemap;
     if (!outputSourcemap) {
-      return {code: output};
+      return { code: output };
     }
 
     if (defaultSourcemap !== 'silent') {

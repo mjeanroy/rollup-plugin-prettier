@@ -29,10 +29,10 @@
  */
 export function verifyWarnLogsBecauseOfSourcemap() {
   expect(console.warn).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required'
+    '[rollup-plugin-prettier] Sourcemap is enabled, computing diff is required',
   );
 
   expect(console.warn).toHaveBeenCalledWith(
-      '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)'
+    '[rollup-plugin-prettier] This may take a moment (depends on the size of your bundle)',
   );
 }

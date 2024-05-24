@@ -24,10 +24,11 @@
 
 import path from 'path';
 import prettier from 'prettier';
-import {RollupPluginPrettier} from '../src/rollup-plugin-prettier.js';
-import {verifyWarnLogsBecauseOfSourcemap} from './utils/verify-warn-logs-because-of-source-map.js';
-import {verifyWarnLogsNotTriggered} from './utils/verify-warn-logs-not-triggered.js';
-import {installWarnSpy} from './utils/install-warn-spy.js';
+import { RollupPluginPrettier } from '../src/rollup-plugin-prettier';
+import { verifyWarnLogsBecauseOfSourcemap } from './utils/verify-warn-logs-because-of-source-map';
+import { verifyWarnLogsNotTriggered } from './utils/verify-warn-logs-not-triggered';
+import { installWarnSpy } from './utils/install-warn-spy';
+import { joinLines } from './utils/join-lines';
 
 describe('RollupPluginPrettier', () => {
   beforeEach(() => {
@@ -53,8 +54,11 @@ describe('RollupPluginPrettier', () => {
       verifyWarnLogsNotTriggered();
       expect(result.map).not.toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -72,8 +76,11 @@ describe('RollupPluginPrettier', () => {
       verifyWarnLogsBecauseOfSourcemap();
       expect(result.map).toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -91,8 +98,11 @@ describe('RollupPluginPrettier', () => {
       verifyWarnLogsNotTriggered();
       expect(result.map).toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -114,8 +124,11 @@ describe('RollupPluginPrettier', () => {
       verifyWarnLogsBecauseOfSourcemap();
       expect(result.map).toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -133,8 +146,11 @@ describe('RollupPluginPrettier', () => {
       verifyWarnLogsBecauseOfSourcemap();
       expect(result.map).toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
@@ -152,8 +168,11 @@ describe('RollupPluginPrettier', () => {
       verifyWarnLogsNotTriggered();
       expect(result.map).not.toBeDefined();
       expect(result.code).toBe(
-          'var foo = 0;\n' +
-          'var test = "hello world";\n'
+        joinLines([
+          'var foo = 0;',
+          'var test = "hello world";',
+          '',
+        ]),
       );
     });
   });
