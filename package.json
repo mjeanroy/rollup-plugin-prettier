@@ -41,9 +41,9 @@
     "magic-string": "0.30.10"
   },
   "devDependencies": {
-    "@babel/core": "7.24.6",
-    "@babel/parser": "7.24.6",
-    "@babel/preset-env": "7.24.6",
+    "@babel/core": "7.24.7",
+    "@babel/parser": "7.24.7",
+    "@babel/preset-env": "7.24.7",
     "@babel/register": "7.24.6",
     "@rollup/plugin-babel": "6.0.4",
     "@typescript-eslint/eslint-plugin": "7.12.0",
