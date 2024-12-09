@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.26.0",
-    "@babel/parser": "7.26.2",
+    "@babel/parser": "7.26.3",
     "@babel/preset-env": "7.26.0",
     "@babel/register": "7.25.9",
     "@rollup/plugin-babel": "6.0.4",
