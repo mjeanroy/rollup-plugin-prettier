@@ -61,7 +61,7 @@
     "jasmine": "3.99.0",
     "jasmine-core": "3.10.1",
     "lodash.startswith": "4.2.1",
-    "prettier": "3.1.0",
+    "prettier": "3.4.2",
     "q": "1.5.1",
     "rimraf": "6.0.1",
     "rollup": "4.29.1",
