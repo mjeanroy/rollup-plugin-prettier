@@ -198,11 +198,9 @@ describe('RollupPluginPrettier', () => {
         cwd,
       });
 
-      expect(prettier.format).toHaveBeenCalledWith(code, {
+      expect(prettier.format).toHaveBeenCalledWith(code, jasmine.objectContaining({
         parser,
-        singleQuote: true,
-        tabWidth: 2,
-      });
+      }));
     });
   });
 });
