@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 
+import path from 'path';
 import hasIn from 'lodash.hasin';
 import isEmpty from 'lodash.isempty';
 import isNil from 'lodash.isnil';
@@ -47,9 +48,13 @@ const OPTIONS = new Set([
  * @returns {Promise<object | null>} A promise resolved with prettier configuration, or null.
  */
 function resolvePrettierConfig(cwd) {
+  // Since prettier 3.1.1, the resolver searches from a file path, not a directory.
+  // Let's fake it by concatenating with a file name.
+  const fromFile = path.join(cwd, '__noop__.js');
+
   // Be careful, `resolveConfig` function does not exist on old version of prettier.
   if (prettier.resolveConfig) {
-    return prettier.resolveConfig(cwd);
+    return prettier.resolveConfig(fromFile);
   }
 
   if (prettier.resolveConfigSync) {
@@ -81,10 +86,9 @@ export class RollupPluginPrettier {
 
     // Try to resolve config file if it exists
     const cwd = hasIn(options, 'cwd') ? options.cwd : process.cwd();
-    this._options = Promise.all([resolvePrettierConfig(cwd), this._options])
-      .then((results) => (
-        Object.assign({}, ...results.map((result) => result || {}))
-      ));
+    this._options = Promise.all([resolvePrettierConfig(cwd), this._options]).then((results) => (
+      Object.assign({}, ...results.map((result) => result || {}))
+    ));
 
     // Reset empty options.
     this._options = this._options.then((opts) => (

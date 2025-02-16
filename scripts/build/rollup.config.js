@@ -82,6 +82,10 @@ module.exports = {
   ],
 
   external: [
+    // Node dependencies.
+    ...['path', 'fs'],
+
+    // Does not include any dependencies.
     ...Object.keys(pkg.dependencies),
     ...Object.keys(pkg.peerDependencies),
   ],
