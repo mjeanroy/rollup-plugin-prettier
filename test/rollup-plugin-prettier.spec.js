@@ -23,7 +23,6 @@
  */
 
 import path from 'path';
-import prettier from 'prettier';
 import { RollupPluginPrettier } from '../src/rollup-plugin-prettier';
 import { verifyWarnLogsBecauseOfSourcemap } from './utils/verify-warn-logs-because-of-source-map';
 import { verifyWarnLogsNotTriggered } from './utils/verify-warn-logs-not-triggered';
@@ -186,21 +185,26 @@ describe('RollupPluginPrettier', () => {
     };
 
     const plugin = new RollupPluginPrettier(options);
+    const code = joinLines([
+      'var name = "John Doe";',
+      'if (true) {',
+      '    console.log(name);',
+      '}',
+    ]);
 
-    spyOn(prettier, 'format').and.callThrough();
-
-    const code = 'var foo = 0;';
     return plugin.reformat(code).then((result) => {
-      expect(result.code).toBe('var foo = 0;\n');
+      expect(result.code).toEqual(joinLines([
+        'var name = \'John Doe\';',
+        'if (true) {',
+        ' console.log(name);',
+        '}',
+        '',
+      ]));
 
       expect(options).toEqual({
         parser,
         cwd,
       });
-
-      expect(prettier.format).toHaveBeenCalledWith(code, jasmine.objectContaining({
-        parser,
-      }));
     });
   });
 });

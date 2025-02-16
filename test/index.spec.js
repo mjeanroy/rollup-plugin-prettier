@@ -23,7 +23,6 @@
  */
 
 import path from 'path';
-import prettier from 'prettier';
 import rollupPluginPrettier from '../src/index';
 import { verifyWarnLogsBecauseOfSourcemap } from './utils/verify-warn-logs-because-of-source-map';
 import { verifyWarnLogsNotTriggered } from './utils/verify-warn-logs-not-triggered';
@@ -231,17 +230,13 @@ describe('rollup-plugin-prettier', () => {
       sourcemap: false,
     };
 
-    spyOn(prettier, 'format').and.callThrough();
-
     const code = 'var foo = 0;';
     const instance = rollupPluginPrettier(options);
     const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
-    return instance.renderChunk(code, chunk, outputOptions).then(() => {
-      expect(prettier.format).toHaveBeenCalledWith(code, {
-        parser: 'babel',
-      });
 
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      expect(result.map).toBeUndefined();
       expect(options).toEqual({
         parser: 'babel',
         sourcemap: false,
@@ -256,17 +251,18 @@ describe('rollup-plugin-prettier', () => {
       singleQuote: true,
     };
 
-    spyOn(prettier, 'format').and.callThrough();
+    const code = joinLines([
+      'var name = "John Doe";',
+    ]);
 
-    const code = 'var foo = 0;';
     const instance = rollupPluginPrettier(options);
     const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
-    return instance.renderChunk(code, chunk, outputOptions).then(() => {
-      expect(prettier.format).toHaveBeenCalledWith(code, {
-        parser: 'babel',
-        singleQuote: true,
-      });
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      expect(result.code).toEqual(joinLines([
+        'var name = \'John Doe\';',
+        '',
+      ]));
 
       expect(options).toEqual({
         parser: 'babel',
@@ -284,21 +280,29 @@ describe('rollup-plugin-prettier', () => {
       cwd,
     };
 
-    spyOn(prettier, 'format').and.callThrough();
-
     const instance = rollupPluginPrettier(options);
-    const code = 'var foo = 0;';
+    const code = joinLines([
+      'var name = "John Doe";',
+      'if (true) {',
+      '    console.log(name);',
+      '}',
+    ]);
+
     const chunk = { isEntry: false, imports: [] };
     const outputOptions = {};
-    return instance.renderChunk(code, chunk, outputOptions).then(() => {
+    return instance.renderChunk(code, chunk, outputOptions).then((result) => {
+      expect(result.code).toEqual(joinLines([
+        'var name = \'John Doe\';',
+        'if (true) {',
+        ' console.log(name);',
+        '}',
+        '',
+      ]));
+
       expect(options).toEqual({
         parser,
         cwd,
       });
-
-      expect(prettier.format).toHaveBeenCalledWith(code, jasmine.objectContaining({
-        parser,
-      }));
     });
   });
 });

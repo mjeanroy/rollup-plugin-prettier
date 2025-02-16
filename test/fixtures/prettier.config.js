@@ -25,5 +25,5 @@
 module.exports = {
   parser: 'babel',
   singleQuote: true,
-  tabWidth: 2,
+  tabWidth: 1,
 };
