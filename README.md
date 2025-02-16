@@ -65,6 +65,9 @@ module.exports = {
 
 ## ChangeLogs
 
+- 4.1.2
+  - Fix a bug where prettier configuration file were not correctly resolved since `prettier@^3.1.1` (same as [this bug in prettier-vscode](https://github.com/prettier/prettier-vscode/issues/3104), broken since [this commit in prettier](https://github.com/prettier/prettier/pull/15363)).
+  - Dependency upgrades
 - 4.1.1
   - Fix support rollup for ^4.0.0, that was intended to be introduced in `4.1.0`
   - Dependency upgrades
