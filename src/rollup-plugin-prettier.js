@@ -117,12 +117,12 @@ export class RollupPluginPrettier {
    * Reformat source code using prettier.
    *
    * @param {string} source The source code to reformat.
-   * @param {boolean} sourcemap If sourcemap should be generated or not.
+   * @param {{sourcemap: boolean} | null | undefined} outputOptions Output options.
    * @return {Promise<{code: string, map: object}|{code: string}>} The transformation result.
    */
-  reformat(source, sourcemap) {
+  reformat(source, outputOptions) {
     return this._options.then((options) => (
-      this._reformat(source, sourcemap, options)
+      this._reformat(source, outputOptions, options)
     ));
   }
 
@@ -130,12 +130,14 @@ export class RollupPluginPrettier {
    * Reformat source code using prettier.
    *
    * @param {string} source The source code to reformat.
-   * @param {boolean} sourcemap If sourcemap should be generated or not.
+   * @param {{sourcemap: boolean} | null | undefined} outputOptions Output options.
    * @param {object} options Prettier options.
    * @returns {Promise<{code: string, map: object}|{code: string}>} The reformat response.
    * @private
    */
-  _reformat(source, sourcemap, options) {
+  _reformat(source, outputOptions, options) {
+    const opts = outputOptions || {};
+    const { sourcemap } = opts;
     return Promise.resolve(prettier.format(source, options)).then((output) => (
       this._processOutput(source, sourcemap, output)
     ));
@@ -147,7 +149,7 @@ export class RollupPluginPrettier {
    * - Otherwise returns prettier output as chunk output.
    *
    * @param {string} source The source code to reformat.
-   * @param {boolean} sourcemap If sourcemap should be generated or not.
+   * @param {boolean|null|undefined} sourcemap If sourcemap should be generated or not.
    * @param {string} output Prettier output.
    * @returns {{code: string, map: object}|{code: string}} The reformat response.
    * @private

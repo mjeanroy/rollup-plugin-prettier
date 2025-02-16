@@ -139,7 +139,9 @@ describe('RollupPluginPrettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    return plugin.reformat(code, true).then((result) => {
+    const outputOptions = { sourcemap: true };
+
+    return plugin.reformat(code, outputOptions).then((result) => {
       expect(plugin.getSourcemap()).toBe(false);
 
       verifyWarnLogsBecauseOfSourcemap();
@@ -161,7 +163,8 @@ describe('RollupPluginPrettier', () => {
     });
 
     const code = 'var foo=0;var test="hello world";';
-    return plugin.reformat(code, false).then((result) => {
+    const outputOptions = { sourcemap: false };
+    return plugin.reformat(code, outputOptions).then((result) => {
       expect(plugin.getSourcemap()).toBe(true);
 
       verifyWarnLogsNotTriggered();

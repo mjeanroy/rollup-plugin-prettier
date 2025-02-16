@@ -49,7 +49,9 @@ export default function rollupPluginPrettier(options) {
      * @return {Promise<Object>} The result containing a `code` property and, if a enabled, a `map` property.
      */
     renderChunk(source, chunkInfo, outputOptions) {
-      return plugin.reformat(source, outputOptions.sourcemap);
+      return plugin.reformat(source, {
+        sourcemap: outputOptions.sourcemap,
+      });
     },
   };
 }
