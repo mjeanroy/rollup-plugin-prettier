@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@types/prettier": "^1.0.0 || ^2.0.0 || ^3.0.0",
-    "diff": "8.0.1",
+    "diff": "8.0.2",
     "lodash.hasin": "4.5.2",
     "lodash.isempty": "4.4.0",
     "lodash.isnil": "4.0.0",
