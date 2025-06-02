@@ -55,7 +55,7 @@
     "eslint-plugin-import": "2.31.0",
     "fancy-log": "2.0.0",
     "globalthis": "1.0.4",
-    "gulp": "5.0.0",
+    "gulp": "5.0.1",
     "gulp-conventional-changelog": "5.0.0",
     "gulp-jasmine": "4.0.0",
     "jasmine": "3.10.0",
