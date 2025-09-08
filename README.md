@@ -26,7 +26,7 @@ module.exports = {
   },
 
   plugins: [
-    // Run plugin with prettier options.
+    // Run plugin with prettier options that override the local config.
     prettier({
       tabWidth: 2,
       singleQuote: false,
@@ -34,6 +34,20 @@ module.exports = {
   ],
 };
 ```
+
+## Plugin Options
+
+### cwd
+- default: `process.cwd()`
+- type: `string`
+- example: `prettier({ cwd: '/path/to/dir', tabWidth: 2 })`
+- purpose: The directory prettier will use to find the local config
+
+### sourcemap
+- default: `null`
+- type: `boolean | 'silent'`
+- example: `prettier({ sourcemap: true, tabWidth: 2 })`
+- purpose: Create a sourcemap if the global rollup options don't specify. Set to 'silent' to avoid rollup-plugin-prettier warning.  See more below.
 
 ## Source Maps
 
