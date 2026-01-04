@@ -25,7 +25,6 @@
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
-import Q from 'q';
 import * as rollup from 'rollup';
 import prettier from '../../src/index';
 import { verifyWarnLogsBecauseOfSourcemap } from '../utils/verify-warn-logs-because-of-source-map';
@@ -184,7 +183,7 @@ describe('rollup-plugin-prettier', () => {
 
     rollup.rollup(config)
       .then((bundle) => (
-        Q.all(config.output.map((out) => bundle.write(out)))
+        Promise.all(config.output.map((out) => bundle.write(out)))
       ))
       .then(() => {
         fs.readFile(output, 'utf8', (err, data) => {
