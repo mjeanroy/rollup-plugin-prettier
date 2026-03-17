@@ -41,8 +41,8 @@
   },
   "devDependencies": {
     "@babel/core": "7.29.0",
-    "@babel/parser": "7.29.0",
-    "@babel/preset-env": "7.29.0",
+    "@babel/parser": "7.29.2",
+    "@babel/preset-env": "7.29.2",
     "@babel/register": "7.28.6",
     "@rollup/plugin-babel": "7.0.0",
     "@typescript-eslint/eslint-plugin": "8.57.1",
