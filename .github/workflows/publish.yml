@@ -63,9 +63,9 @@ jobs:
       - name: pnpm install
         run: pnpm install
       - name: Publish (test)
-        run: pnpm publish --dry-run
+        run: pnpm publish --dry-run --no-git-checks
       - name: Publish
         if: inputs.dry_run == false
-        run: pnpm publish
+        run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
