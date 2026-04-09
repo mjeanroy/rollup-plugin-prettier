@@ -66,6 +66,6 @@ jobs:
         run: pnpm publish --dry-run --no-git-checks
       - name: Publish
         if: inputs.dry_run == false
-        run: pnpm publish --no-git-checks
+        run: pnpm publish --no-git-checks --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
