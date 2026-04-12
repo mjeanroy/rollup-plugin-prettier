@@ -77,7 +77,8 @@ jobs:
           git push --dry-run --tags
         env:
           REF_NAME: ${{ github.ref_name }}
-      - name: Git push
+      - name: git push
+        if: inputs.dry_run == false
         run: |
           git push origin "${REF_NAME}"
           git push --tags
