@@ -64,16 +64,22 @@ jobs:
       - name: Test
         run: pnpm test
       - name: Release
-        run: pnpm run release:${{ inputs.version }}
+        run: pnpm run "release:${VERSION}"
+        env:
+          VERSION: ${{ inputs.version }}
       - name: Git log
         run: |
           git log -n5 --oneline
           git tag --sort=-creatordate
       - name: git push --dry-run
         run: |
-          git push --dry-run origin ${{ github.ref_name }} 
+          git push --dry-run origin "${REF_NAME}"
           git push --dry-run --tags
+        env:
+          REF_NAME: ${{ github.ref_name }}
       - name: Git push
         run: |
-          git push origin ${{ github.ref_name }} 
+          git push origin "${REF_NAME}"
           git push --tags
+        env:
+          REF_NAME: ${{ github.ref_name }}
