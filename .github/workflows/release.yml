@@ -35,6 +35,11 @@ on:
           - patch
           - minor
           - major
+      dry_run:
+        description: "Dry run"
+        required: true
+        type: boolean
+        default: true
 
 jobs:
   build:
@@ -64,6 +69,10 @@ jobs:
         run: |
           git log -n5 --oneline
           git tag --sort=-creatordate
+      - name: git push --dry-run
+        run: |
+          git push --dry-run origin ${{ github.ref_name }} 
+          git push --dry-run --tags
       - name: Git push
         run: |
           git push origin ${{ github.ref_name }} 
