@@ -37,6 +37,10 @@ on:
         type: boolean
         default: true
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -59,13 +63,13 @@ jobs:
           git fetch --prune --unshallow --tags
           git tag --list --sort=committerdate
       - name: Checkout tag
-        run: git checkout ${{ inputs.version }}
+        run: git checkout "${VERSION}"
+        env:
+          VERSION: ${{ inputs.version }}
       - name: pnpm install
         run: pnpm install
       - name: Publish (test)
-        run: pnpm publish --dry-run --no-git-checks
+        run: NODE_AUTH_TOKEN="" pnpm publish --dry-run --no-git-checks
       - name: Publish
         if: inputs.dry_run == false
-        run: pnpm publish --no-git-checks --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: NODE_AUTH_TOKEN="" pnpm publish --no-git-checks --provenance
