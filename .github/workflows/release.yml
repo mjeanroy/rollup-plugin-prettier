@@ -62,6 +62,7 @@ jobs:
         name: Set up PNPM
         with:
           version: 10.33.0
+          cache: false
       - name: Install
         run: pnpm install
       - name: Test
