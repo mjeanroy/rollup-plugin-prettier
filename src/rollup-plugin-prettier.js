@@ -23,7 +23,6 @@
  */
 
 import path from 'node:path';
-import isEmpty from 'lodash.isempty';
 import omitBy from 'lodash.omitby';
 import MagicString from 'magic-string';
 import * as diff from 'diff';
@@ -71,6 +70,16 @@ function resolvePrettierConfig(cwd) {
  */
 function hasIn(value, key) {
   return value != null && key in value;
+}
+
+/**
+ * Check if object is empty (i.e has no keys).
+ *
+ * @param {object | null | undefined} value Input.
+ * @returns {boolean} `true` if `value` is empty, `false` otherwise.
+ */
+function isEmpty(value) {
+  return value == null || Object.keys(value).length === 0;
 }
 
 /**
