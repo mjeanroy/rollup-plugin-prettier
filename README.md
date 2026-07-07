@@ -79,8 +79,9 @@ module.exports = {
 
 ## ChangeLogs
 
-- 4.1.3
+- 4.2.0
   - Package metadata update ([#1914](https://github.com/mjeanroy/rollup-plugin-prettier/pull/1914))
+  - Remove useless dependencies (`lodash.isNil`, `lodash.hasIn`, `lodash.isEmpty`, `lodash.omitBy`)
   - Dependency upgrades
 - 4.1.2
   - Fix a bug where prettier configuration file were not correctly resolved since `prettier@^3.1.1` (same as [this bug in prettier-vscode](https://github.com/prettier/prettier-vscode/issues/3104), broken since [this commit in prettier](https://github.com/prettier/prettier/pull/15363)).
