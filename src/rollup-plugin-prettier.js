@@ -25,7 +25,6 @@
 import path from 'node:path';
 import hasIn from 'lodash.hasin';
 import isEmpty from 'lodash.isempty';
-import isNil from 'lodash.isnil';
 import omitBy from 'lodash.omitby';
 import MagicString from 'magic-string';
 import * as diff from 'diff';
@@ -162,8 +161,8 @@ export class RollupPluginPrettier {
     // Should we generate sourcemap?
     // The sourcemap option may be a boolean or any truthy value (such as a `string`).
     // Note that this option should be false by default as it may take a (very) long time.
-    const defaultSourcemap = isNil(this._sourcemap) ? false : this._sourcemap;
-    const outputSourcemap = isNil(sourcemap) ? defaultSourcemap : sourcemap;
+    const defaultSourcemap = this._sourcemap == null ? false : this._sourcemap;
+    const outputSourcemap = sourcemap == null ? defaultSourcemap : sourcemap;
     if (!outputSourcemap) {
       return { code: output };
     }
