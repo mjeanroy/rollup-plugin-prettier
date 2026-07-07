@@ -23,7 +23,6 @@
  */
 
 import path from 'node:path';
-import omitBy from 'lodash.omitby';
 import MagicString from 'magic-string';
 import * as diff from 'diff';
 import prettier from 'prettier';
@@ -80,6 +79,34 @@ function hasIn(value, key) {
  */
 function isEmpty(value) {
   return value == null || Object.keys(value).length === 0;
+}
+
+/**
+ * creates an object composed of the own and inherited enumerable string keyed properties of object
+ * that predicate doesn't return truthy for.
+ *
+ * The predicate is invoked with two arguments: (value, key).
+ *
+ * @param {object | null | undefined} input Input.
+ * @param {function(value: any, key: string): any} predicate The predicate.
+ * @returns {boolean} `true` if `value` is empty, `false` otherwise.
+ */
+function omitBy(input, predicate) {
+  if (input == null) {
+    return input;
+  }
+
+  const output = {};
+
+  // eslint-disable-next-line guard-for-in,no-restricted-syntax
+  for (const key in input) {
+    const value = input[key];
+    if (!predicate.call(null, value, key, input)) {
+      output[key] = value;
+    }
+  }
+
+  return output;
 }
 
 /**
