@@ -23,7 +23,6 @@
  */
 
 import path from 'node:path';
-import hasIn from 'lodash.hasin';
 import isEmpty from 'lodash.isempty';
 import omitBy from 'lodash.omitby';
 import MagicString from 'magic-string';
@@ -61,6 +60,17 @@ function resolvePrettierConfig(cwd) {
   }
 
   return Promise.resolve(null);
+}
+
+/**
+ * Check if key property exists anywhere on the object's prototype chain.
+ *
+ * @param {object | null | undefined} value Input.
+ * @param {string} key Property name.
+ * @returns {boolean} `true` if `key` is an property of `value`, `false` otherwise.
+ */
+function hasIn(value, key) {
+  return value != null && key in value;
 }
 
 /**
