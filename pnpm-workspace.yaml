@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 ##
 
-minimumReleaseAge: 2880
+minimumReleaseAge: 10080
 blockExoticSubdeps: true
 trustPolicy: no-downgrade
 trustPolicyExclude:
