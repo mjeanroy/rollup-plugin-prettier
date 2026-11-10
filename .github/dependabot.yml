@@ -45,6 +45,10 @@ updates:
         - "jasmine"
         - "jasmine-core"
   ignore:
+    # magic-string switched to esm module which means supporting node >= 22
+    # Since rollup still supports node 18, ignore major until rollup@5 is released.
+    - dependency-name: magic-string
+      update-types: ["version-update:semver-major"]
     # eslint@^9.0.0 requires a rewrite of the config to a new format.
     # Did not have time to upgrade yet.
     - dependency-name: eslint
