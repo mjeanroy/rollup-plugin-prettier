@@ -20,6 +20,7 @@
     "build": "gulp build",
     "tdd": "gulp tdd",
     "test": "gulp test",
+    "test:unit": "gulp test:unit",
     "release": "gulp release:minor",
     "release:patch": "gulp release:patch",
     "release:minor": "gulp release:minor",
