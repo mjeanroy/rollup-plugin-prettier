@@ -25,26 +25,56 @@
 const path = require('node:path');
 const config = require('../config');
 const log = require('../log');
+const { readCliOptions } = require('../cli');
 
-module.exports = function lint() {
+const sourcesOf = (ext) => ([
+  path.join(config.root, `*.${ext}`),
+  path.join(config.src, '**', `*.${ext}`),
+  path.join(config.test, '**', `*.${ext}`),
+  path.join(config.scripts, '**', `*.${ext}`),
+]);
+
+const ALL_INPUTS = [
+  ...sourcesOf('js'),
+  ...sourcesOf('ts'),
+];
+
+/**
+ * Lint the whole project.
+ *
+ * @return {Promise<void>} A promise resolved when lint succeeds, rejected otherwise.
+ */
+function lint() {
+  return runEslint(ALL_INPUTS, false);
+}
+
+/**
+ * Lint the files given with `--file <path>` (repeatable, may be a directory or a glob),
+ * or the whole project if none is given, e.g:
+ *
+ *   pnpm run lint --file src/index.js --file test/index.spec.js
+ *
+ * @return {Promise<void>} A promise resolved when lint succeeds, rejected otherwise.
+ */
+function lintCli() {
+  const { files } = readCliOptions();
+  return files.length > 0 ? runEslint(files, true) : lint();
+}
+
+/**
+ * Run ESLint on given inputs, and fail if any warning or error is reported.
+ *
+ * @param {Array<string>} inputs Files, directories or globs to lint.
+ * @param {boolean} errorOnUnmatchedPattern Fail if an input does not match any file.
+ * @return {Promise<void>} A promise resolved when lint succeeds, rejected otherwise.
+ */
+function runEslint(inputs, errorOnUnmatchedPattern) {
   const nodeVersion = process.versions.node;
   const major = Number(nodeVersion.split('.')[0]);
   if (major <= 14) {
     log.debug(`Skipping ESLint because of node version compatibility (currenly in used: ${nodeVersion})`);
     return Promise.resolve();
   }
-
-  const sourcesOf = (ext) => ([
-    path.join(config.root, `*.${ext}`),
-    path.join(config.src, '**', `*.${ext}`),
-    path.join(config.test, '**', `*.${ext}`),
-    path.join(config.scripts, '**', `*.${ext}`),
-  ]);
-
-  const inputs = [
-    ...sourcesOf('js'),
-    ...sourcesOf('ts'),
-  ];
 
   log.debug('Linting files: ');
 
@@ -59,7 +89,7 @@ module.exports = function lint() {
   const fancyLog = require('fancy-log');
 
   const eslint = new ESLint({
-    errorOnUnmatchedPattern: false,
+    errorOnUnmatchedPattern,
   });
 
   const lintFiles = eslint.lintFiles(inputs);
@@ -74,4 +104,9 @@ module.exports = function lint() {
       }
     }
   });
+}
+
+module.exports = {
+  lint,
+  lintCli,
 };

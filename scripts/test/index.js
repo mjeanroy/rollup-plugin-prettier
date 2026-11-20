@@ -23,41 +23,11 @@
  */
 
 const path = require('node:path');
-const { parseArgs } = require('node:util');
 const gulp = require('gulp');
 const Jasmine = require('jasmine');
 const build = require('../build');
 const config = require('../config');
-
-/**
- * Read optional `--file <path>` (repeatable) and `--filter <regex>` flags from the command line,
- * so a subset of the test suite can be run, e.g:
- *
- *   pnpm run test:unit --file test/index.spec.js --filter "should run prettier"
- *
- * @return {{files: Array<string>, filter: (string|undefined)}} Selected spec files and spec name filter.
- */
-function readCliOptions() {
-  const { values } = parseArgs({
-    args: process.argv.slice(2),
-    strict: false,
-    options: {
-      file: { type: 'string', multiple: true },
-      filter: { type: 'string' },
-    },
-  });
-
-  // Paths may be absolute or relative to the project root; Jasmine expects them relative to the
-  // project root, using forward slashes.
-  const files = (values.file || []).map((file) => (
-    path.relative(config.root, path.resolve(config.root, file)).split(path.sep).join('/')
-  ));
-
-  return {
-    files,
-    filter: values.filter,
-  };
-}
+const { readCliOptions } = require('../cli');
 
 function loadJasmine({ files = [], filter } = {}) {
   const runner = new Jasmine({
