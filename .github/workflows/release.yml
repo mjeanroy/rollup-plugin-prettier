@@ -59,11 +59,13 @@ jobs:
         with:
           node-version: 24
           package-manager-cache: false
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+      - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         name: Set up PNPM
         with:
-          version: 10.33.0
+          version: 11.28.12
           cache: false
+          install: false
+          node-version-file: false
       - name: Install
         run: pnpm install
       - name: Test

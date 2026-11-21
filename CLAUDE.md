@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Package manager is pnpm (see `pnpm-workspace.yaml`, CI uses pnpm 10). Node version in `.nvmrc`. All npm scripts delegate to gulp tasks in `gulpfile.js` / `scripts/`.
+Package manager is pnpm (see `pnpm-workspace.yaml`, pnpm 11, version pinned in the GitHub workflows; pnpm 11 only reads auth/registry settings from `.npmrc`, so pnpm settings belong in `pnpm-workspace.yaml`). Node version in `.nvmrc`. All npm scripts delegate to gulp tasks in `gulpfile.js` / `scripts/`.
 
 - `pnpm run lint` — ESLint (airbnb-base + `valid-jsdoc`, max-len 140) over root, `src`, `test`, `scripts` (`.js` and `.ts`). Any warning fails the task. Skipped on Node <= 14. Restrict to specific files/directories/globs with `--file <path>` (repeatable; fails if a path matches nothing):
   ```sh
@@ -42,7 +42,7 @@ Jasmine with `failSpecWithNoExpectations: true`. `test/index.spec.js` and `test/
 
 ## Compatibility
 
-- CI (`.github/workflows/build.yml`) runs `pnpm test` on Node 18–26 across Windows, Linux and macOS: code in `scripts/` must handle Windows paths (use `path.join`, normalize to forward slashes where Jasmine/ESLint expect them).
+- CI (`.github/workflows/build.yml`) runs `pnpm test` on Node 18–26 across Windows, Linux and macOS, with Node installed by `actions/setup-node` and pnpm by `pnpm/setup` (self-contained binary, since pnpm 11 itself needs Node >= 22.13): code in `scripts/` must handle Windows paths (use `path.join`, normalize to forward slashes where Jasmine/ESLint expect them).
 - `dist/` is transpiled by Babel targeting Node 14. (`engines` in `package.json` still says `>=6`, which is stale.)
 
 ## Release & publishing

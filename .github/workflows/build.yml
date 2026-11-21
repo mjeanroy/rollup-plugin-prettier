@@ -42,10 +42,14 @@ jobs:
         name: Set up NodeJS
         with:
           node-version: ${{ matrix.node }}
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+      # pnpm/setup installs the self-contained pnpm binary, so pnpm >= 11 (requiring node >= 22.13)
+      # can run while tests still run with the node version of the matrix.
+      - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         name: Set up PNPM
         with:
-          version: 10.33.0
+          version: 11.28.12
+          install: false
+          node-version-file: false
       - name: Install
         run: pnpm install
       - name: Test
