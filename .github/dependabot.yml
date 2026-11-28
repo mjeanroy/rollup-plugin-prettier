@@ -53,3 +53,8 @@ updates:
     # Did not have time to upgrade yet.
     - dependency-name: eslint
       update-types: ["version-update:semver-major"]
+    # babel@8 is esm only and requires node ^22.18.0 || >=24.11.0, but CI still runs on node 18 to 26.
+    # Also, @rollup/plugin-babel still declares a peer dependency on @babel/core@^7.
+    # Ignore major until node 18 support is dropped, likely with rollup 5 upgrade.
+    - dependency-name: "@babel/*"
+      update-types: ["version-update:semver-major"]
