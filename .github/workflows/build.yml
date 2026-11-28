@@ -48,7 +48,7 @@ jobs:
       - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         name: Set up PNPM
         with:
-          version: 11.28.12
+          version: 12.23.0
           cache: false
           install: false
           node-version-file: false

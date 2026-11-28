@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Package manager is pnpm (see `pnpm-workspace.yaml`, pnpm 11, version pinned in the GitHub workflows; pnpm 11 only reads auth/registry settings from `.npmrc`, so pnpm settings belong in `pnpm-workspace.yaml`). Node version in `.nvmrc`. All npm scripts delegate to gulp tasks in `gulpfile.js` / `scripts/`.
+Package manager is pnpm (see `pnpm-workspace.yaml`, pnpm 12, version pinned in the GitHub workflows; since pnpm 11, pnpm only reads auth/registry settings from `.npmrc`, so pnpm settings belong in `pnpm-workspace.yaml`). Node version in `.nvmrc`. All npm scripts delegate to gulp tasks in `gulpfile.js` / `scripts/`.
 
 - `pnpm run lint` — ESLint (airbnb-base + `valid-jsdoc`, max-len 140) over root, `src`, `test`, `scripts` (`.js` and `.ts`). Any warning fails the task. Skipped on Node <= 14. Restrict to specific files/directories/globs with `--file <path>` (repeatable; fails if a path matches nothing):
   ```sh
